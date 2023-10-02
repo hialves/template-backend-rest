@@ -1,0 +1,79 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  super_admin
+  admin
+  customer
+  manager
+}
+
+model Admin {
+  id        String   @id @default(uuid()) @db.Uuid()
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime? @updatedAt
+  name      String   @db.VarChar
+  assetId   String?  @unique @db.Uuid()
+  userId    String?  @unique @db.Uuid()
+  asset     Asset?   @relation(fields: [assetId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  user      User?    @relation(fields: [userId], references: [id])
+}
+
+model Asset {
+  id        String    @id @default(uuid()) @db.Uuid()
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime? @updatedAt
+  filename  String    @db.VarChar
+  source    String    @db.VarChar
+  mimeType  String    @db.VarChar
+  admin     Admin?
+  customer  Customer?
+}
+
+model Customer {
+  id        String   @id @default(uuid()) @db.Uuid()
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime? @updatedAt
+  name      String   @db.VarChar
+  cardToken String?  @db.VarChar
+  phone     String?  @db.VarChar
+  assetId   String?  @unique @db.Uuid()
+  userId    String?  @unique @db.Uuid()
+  user      User?    @relation(fields: [userId], references: [id])
+  asset     Asset?   @relation(fields: [assetId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model Session {
+  id        String   @id @default(uuid()) @db.Uuid()
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime? @updatedAt
+  token     String   @unique @db.VarChar
+  expiresAt DateTime @db.Timestamp(6)
+  valid     Boolean
+  device    String?  @db.VarChar
+  ip        String?  @db.VarChar
+  userId    String   @db.Uuid()
+  user      User     @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model User {
+  id                         String    @id @default(uuid()) @db.Uuid()
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime? @updatedAt
+  password                   String?   @db.VarChar
+  email                      String    @unique @db.VarChar
+  recoverPasswordToken       String?   @db.VarChar
+  recoverPasswordTokenExpire DateTime? @db.Timestamp
+  googleToken                String?   @db.VarChar
+  role                       Role?
+  lastLogin                  DateTime? @db.Timestamp
+  admin                      Admin?
+  customer                   Customer?
+  session                    Session[]
+}
