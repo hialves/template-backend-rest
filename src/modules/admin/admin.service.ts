@@ -1,11 +1,11 @@
 import { Injectable } from '@nestjs/common';
-import { CreateAdminInput } from './dto/create-admin.input';
+import { CreateAdminDto } from './dto/create-admin.dto';
 import { ID } from '../../@types';
 import { UserService } from '../user/user.service';
-import { UpdateAdminInput } from './dto/update-admin.input';
+import { UpdateAdminDto } from './dto/update-admin.dto';
 import { PrismaService } from '../../prisma/prisma.service';
 import { Admin, Role } from '@prisma/client';
-import { PaginatedInput } from '../../common/dto/filter-input';
+import { PaginatedDto } from '../../common/dto/filter-input.dto';
 import { DeleteResult } from '../../common/responses/result-type';
 
 @Injectable()
@@ -19,7 +19,7 @@ export class AdminService {
     return this.prisma.admin;
   }
 
-  async create(input: CreateAdminInput): Promise<Admin> {
+  async create(input: CreateAdminDto): Promise<Admin> {
     const { email, password } = input;
 
     const result = await this.prisma.$transaction(
@@ -33,7 +33,7 @@ export class AdminService {
     return result;
   }
 
-  async findAll(filters?: PaginatedInput) {
+  async findAll(filters?: PaginatedDto) {
     return this.repository.findMany(filters);
   }
 
@@ -41,7 +41,7 @@ export class AdminService {
     return this.repository.findUnique({ where: { id } });
   }
 
-  async update(id: ID, input: UpdateAdminInput) {
+  async update(id: ID, input: UpdateAdminDto) {
     await this.repository.update({ where: { id }, data: input });
     return this.findOne(id);
   }

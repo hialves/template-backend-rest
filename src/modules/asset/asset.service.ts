@@ -3,7 +3,7 @@ import * as fs from 'fs';
 import * as path from 'path';
 import { Stream } from 'stream';
 import { FileUpload } from '../../common/interfaces/file-upload.interface';
-import { PaginatedInput } from '../../common/dto/filter-input';
+import { PaginatedDto } from '../../common/dto/filter-input.dto';
 import { PaginatedList } from '../../common/dto/paginated-list';
 import { responseMessages } from '../../common/messages/response.messages';
 import { ID } from '../../@types';
@@ -44,7 +44,7 @@ export class AssetService implements OnApplicationBootstrap {
     }
   }
 
-  async findAll(filters?: PaginatedInput): Promise<PaginatedList<Asset>> {
+  async findAll(filters?: PaginatedDto): Promise<PaginatedList<Asset>> {
     const totalItems = await this.repository.count();
     const items = await this.repository.findMany(filters);
 

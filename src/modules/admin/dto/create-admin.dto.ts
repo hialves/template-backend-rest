@@ -3,7 +3,7 @@ import { IsEmailNotRegistered } from '../../../common/validator/is-email-not-reg
 import { ApiProperty } from '@nestjs/swagger';
 import { HashPassword } from '../../../decorators/hash-password.decorator';
 
-export class CreateAdminInput {
+export class CreateAdminDto {
   @ApiProperty()
   @IsNotEmpty()
   name: string;

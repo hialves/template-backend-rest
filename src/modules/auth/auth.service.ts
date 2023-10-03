@@ -7,7 +7,7 @@ import { MailService } from '../../mail/mail.service';
 import { UserService } from '../user/user.service';
 import { InvalidCredentialsError, NotFoundError, SuccessResult } from '../../common/responses/result-type';
 import { responseMessages } from '../../common/messages/response.messages';
-import { LoginInput } from './dto/login.input';
+import { LoginDto } from './dto/login.dto';
 import { SessionService } from '../session/session.service';
 import { apiConfig } from '../../config/api.config';
 import { Request, Response } from 'express';
@@ -53,7 +53,7 @@ export class AuthService {
     await this.userService.resetPassword(user.id, newPassword);
   }
 
-  async login(input: LoginInput, request: Request, response: Response) {
+  async login(input: LoginDto, request: Request, response: Response) {
     const user = await this.userService.findByEmailLogin(input.email);
     if (!user) throw new InvalidCredentialsError();
     const passwordMatch = await bcrypt.compare(input.password, user.password);

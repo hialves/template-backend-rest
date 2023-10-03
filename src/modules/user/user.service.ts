@@ -1,11 +1,11 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { CreateUserInput } from './dto/create-user.input';
+import { CreateUserDto } from './dto/create-user.dto';
 import { ID } from '../../@types';
 import { DeleteResult, NotFoundError } from '../../common/responses/result-type';
 import { responseMessages } from '../../common/messages/response.messages';
 import * as bcrypt from 'bcrypt';
 import { PaginatedList } from '../../common/dto/paginated-list';
-import { PaginatedInput } from '../../common/dto/filter-input';
+import { PaginatedDto } from '../../common/dto/filter-input.dto';
 import { ILoginUser } from '../../common/interfaces/login-user.interface';
 import dayjs from 'dayjs';
 import { PrismaService } from '../../prisma/prisma.service';
@@ -19,11 +19,11 @@ export class UserService {
     return this.prisma.user;
   }
 
-  async create(input: CreateUserInput, repository = this.repository): Promise<User> {
+  async create(input: CreateUserDto, repository = this.repository): Promise<User> {
     return repository.create({ data: input });
   }
 
-  async findAll(filters?: PaginatedInput): Promise<PaginatedList<User>> {
+  async findAll(filters?: PaginatedDto): Promise<PaginatedList<User>> {
     const totalItems = await this.repository.count();
     const items = await this.repository.findMany(filters);
 

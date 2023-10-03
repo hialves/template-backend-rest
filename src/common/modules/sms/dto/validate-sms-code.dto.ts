@@ -2,11 +2,10 @@ import { IsNotEmpty, IsPhoneNumber, IsString } from 'class-validator';
 import { responseMessages } from '../../../messages/response.messages';
 
 export enum ValidateSmsCodeEnum {
-  PRE_CREATE_USER = 'PRE_CREATE_USER',
   LOGIN = 'LOGIN',
 }
 
-export class ValidateSmsCodeInput {
+export class ValidateSmsCodeDto {
   @IsNotEmpty()
   @IsString()
   @IsPhoneNumber(undefined, {

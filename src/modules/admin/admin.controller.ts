@@ -1,11 +1,11 @@
 import { Roles } from '../../decorators/roles.decorator';
 import { AdminService } from './admin.service';
-import { CreateAdminInput } from './dto/create-admin.input';
-import { UpdateAdminInput } from './dto/update-admin.input';
+import { CreateAdminDto } from './dto/create-admin.dto';
+import { UpdateAdminDto } from './dto/update-admin.dto';
 import { ID } from '../../@types';
 import { Body, Controller, Delete, Get, Param, Patch, Post, Query } from '@nestjs/common';
 import { Role } from '@prisma/client';
-import { PaginatedInput } from '../../common/dto/filter-input';
+import { PaginatedDto } from '../../common/dto/filter-input.dto';
 import { ApiTags } from '@nestjs/swagger';
 import { IsPublic } from '../../decorators/public.decorator';
 
@@ -17,14 +17,14 @@ export class AdminController {
   // @Roles(Role.super_admin)
   @IsPublic()
   @Post()
-  create(@Body() input: CreateAdminInput) {
+  create(@Body() input: CreateAdminDto) {
     console.log({ input });
     return this.service.create(input);
   }
 
   @Roles(Role.super_admin)
   @Get()
-  findAll(@Query() query: PaginatedInput) {
+  findAll(@Query() query: PaginatedDto) {
     return this.service.findAll(query);
   }
 
@@ -36,7 +36,7 @@ export class AdminController {
 
   @Roles(Role.super_admin, Role.admin, Role.manager)
   @Patch(':id')
-  update(@Param('id') id: ID, @Body() input: UpdateAdminInput) {
+  update(@Param('id') id: ID, @Body() input: UpdateAdminDto) {
     return this.service.update(id, input);
   }
 

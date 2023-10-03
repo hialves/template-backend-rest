@@ -5,7 +5,7 @@ export enum OrderByDateEnum {
   ASC = 'asc',
 }
 
-export class StringFilterInput {
+export class StringFilterDto {
   @IsOptional()
   @IsString()
   contains: string;
@@ -39,7 +39,7 @@ export class StringFilterInput {
   startsWith: string;
 }
 
-export class NumberFilterInput {
+export class NumberFilterDto {
   @IsOptional()
   @IsNumber()
   equals: number;
@@ -77,7 +77,7 @@ export class NumberFilterInput {
   lte: number;
 }
 
-export class BooleanFilterInput {
+export class BooleanFilterDto {
   @IsOptional()
   @IsBoolean()
   equals: boolean;
@@ -87,7 +87,7 @@ export class BooleanFilterInput {
   not: boolean;
 }
 
-export class PaginatedInput {
+export class PaginatedDto {
   @IsOptional()
   @IsNumber()
   skip?: number = 0;
@@ -97,7 +97,7 @@ export class PaginatedInput {
   take?: number = 10;
 }
 
-export class OrderByFilterInput {
+export class OrderByFilterDto {
   @IsOptional()
   createdAt?: OrderByDateEnum;
 
@@ -105,12 +105,12 @@ export class OrderByFilterInput {
   updatedAt?: OrderByDateEnum;
 }
 
-export class FilterInput extends PaginatedInput {
+export class FilterDto extends PaginatedDto {
   @IsOptional()
-  orderBy: OrderByFilterInput;
+  orderBy: OrderByFilterDto;
 }
 
-export class FilterWithoutDefaultValuesInput {
+export class FilterWithoutDefaultValuesDto {
   @IsOptional()
   skip?: number;
 
@@ -118,5 +118,5 @@ export class FilterWithoutDefaultValuesInput {
   take?: number;
 
   @IsOptional()
-  orderBy: OrderByFilterInput;
+  orderBy: OrderByFilterDto;
 }

@@ -1,12 +1,12 @@
 import { IsPublic } from '../../decorators/public.decorator';
-import { CreateCustomerInput } from './dto/create-customer.input';
+import { CreateCustomerDto } from './dto/create-customer.dto';
 import { CustomerService } from './customer.service';
 import { Roles } from '../../decorators/roles.decorator';
 import { ID } from '../../@types';
-import { UpdateCustomerInput } from './dto/update-customer.input';
+import { UpdateCustomerDto } from './dto/update-customer.dto';
 import { DeleteResult } from '../../common/responses/result-type';
 import { Body, Controller, Delete, Get, Param, Patch, Post, Query } from '@nestjs/common';
-import { PaginatedInput } from '../../common/dto/filter-input';
+import { PaginatedDto } from '../../common/dto/filter-input.dto';
 import { Role } from '@prisma/client';
 import { ApiTags } from '@nestjs/swagger';
 
@@ -17,13 +17,13 @@ export class CustomerController {
 
   @IsPublic()
   @Post()
-  createCustomer(@Body() input: CreateCustomerInput) {
+  createCustomer(@Body() input: CreateCustomerDto) {
     return this.service.create(input);
   }
 
   @Roles(Role.super_admin)
   @Get()
-  findAll(@Query() query: PaginatedInput) {
+  findAll(@Query() query: PaginatedDto) {
     return this.service.findAll(query);
   }
 
@@ -35,7 +35,7 @@ export class CustomerController {
 
   @Roles(Role.super_admin, Role.customer)
   @Patch(':id')
-  update(@Param('id') id: ID, @Body() input: UpdateCustomerInput) {
+  update(@Param('id') id: ID, @Body() input: UpdateCustomerDto) {
     return this.service.update(id, input);
   }
 

@@ -1,11 +1,11 @@
 import { Injectable } from '@nestjs/common';
-import { CreateCustomerInput } from './dto/create-customer.input';
+import { CreateCustomerDto } from './dto/create-customer.dto';
 import { ID } from '../../@types';
-import { UpdateCustomerInput } from './dto/update-customer.input';
+import { UpdateCustomerDto } from './dto/update-customer.dto';
 import { PrismaService } from '../../prisma/prisma.service';
 import { Customer } from '@prisma/client';
 import { DeleteResult } from '../../common/responses/result-type';
-import { PaginatedInput } from '../../common/dto/filter-input';
+import { PaginatedDto } from '../../common/dto/filter-input.dto';
 
 @Injectable()
 export class CustomerService {
@@ -15,11 +15,11 @@ export class CustomerService {
     return this.prisma.customer;
   }
 
-  async create(input: CreateCustomerInput) {
+  async create(input: CreateCustomerDto) {
     return this.repository.create({ data: input });
   }
 
-  async findAll(filters?: PaginatedInput) {
+  async findAll(filters?: PaginatedDto) {
     return this.repository.findMany(filters);
   }
 
@@ -27,7 +27,7 @@ export class CustomerService {
     return this.repository.findUnique({ where: { id } });
   }
 
-  async update(id: ID, input: UpdateCustomerInput) {
+  async update(id: ID, input: UpdateCustomerDto) {
     return this.repository.update({ where: { id }, data: input });
   }
 

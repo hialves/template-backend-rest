@@ -1,5 +1,5 @@
 import { AuthService } from './auth.service';
-import { LoginInput } from './dto/login.input';
+import { LoginDto } from './dto/login.dto';
 import { Request, Response } from 'express';
 import { IsPublic } from '../../decorators/public.decorator';
 import { Body, Controller, Post, Query, Req, Res } from '@nestjs/common';
@@ -12,7 +12,7 @@ export class AuthController {
 
   @IsPublic()
   @Post('login')
-  login(@Body() input: LoginInput, @Req() req: Request, @Res({ passthrough: true }) res: Response) {
+  login(@Body() input: LoginDto, @Req() req: Request, @Res({ passthrough: true }) res: Response) {
     return this.service.login(input, req, res);
   }
 

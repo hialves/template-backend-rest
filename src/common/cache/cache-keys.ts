@@ -1,5 +1,5 @@
 import { ID } from '../../@types';
-import { FilterWithoutDefaultValuesInput } from '../dto/filter-input';
+import { FilterWithoutDefaultValuesDto } from '../dto/filter-input.dto';
 
 export const cacheKeys = {
   sms: {
@@ -13,7 +13,7 @@ export const cacheKeys = {
   resolver: {
     customer: (id: string) => `RESOLVER/CUSTOMER/ID/${id}`,
     user: (id: string) => `RESOLVER/USER/ID/${id}`,
-    expertiseCustomerId: (customerId: string, filters?: FilterWithoutDefaultValuesInput) =>
+    expertiseCustomerId: (customerId: string, filters?: FilterWithoutDefaultValuesDto) =>
       `RESOLVER/EXPERTISE/CUSTOMER_ID/${customerId}${filters ? `?${JSON.stringify(filters)}` : ''}`,
   },
   auth: {

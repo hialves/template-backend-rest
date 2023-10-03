@@ -1,5 +1,5 @@
 import { AssetService } from './asset.service';
-import { PaginatedInput } from '../../common/dto/filter-input';
+import { PaginatedDto } from '../../common/dto/filter-input.dto';
 import { IsPublic } from '../../decorators/public.decorator';
 import { ID } from '../../@types';
 import { Controller, Get, Param, Query } from '@nestjs/common';
@@ -12,7 +12,7 @@ export class AssetController {
 
   @IsPublic()
   @Get()
-  findAll(@Query() filters: PaginatedInput) {
+  findAll(@Query() filters: PaginatedDto) {
     return this.assetService.findAll(filters);
   }
 
