@@ -4,17 +4,30 @@ import * as bcrypt from 'bcrypt';
 
 const prisma = new PrismaClient();
 
+function start(context: string) {
+  console.log(`\n  ${context}`);
+}
+
+function log(content: string) {
+  console.log(`\t${content}`);
+}
+
+function done(context: string) {
+  console.log(`  ${context} DONE!`);
+}
+
 async function createSuperadmin() {
   if (!process.env.SUPERADMIN_EMAIL || !process.env.SUPERADMIN_PASSWORD) return;
 
-  console.log('\n < Seeding database - SUPERADMIN >');
+  const context = '< Seeding database - SUPERADMIN >';
+  start(context);
   const superadminEmail = process.env.SUPERADMIN_EMAIL;
 
   const user = await prisma.user.findUnique({
     where: { email: superadminEmail },
   });
-  console.log(` Superadmin already exists with email ${superadminEmail}, exiting...`);
-  if (user) return;
+  log(`Superadmin already exists with email ${superadminEmail}, exiting...`);
+  if (user) return done(context);
 
   const superadminPassword = await bcrypt.hash(process.env.SUPERADMIN_PASSWORD, 12);
   await prisma.$transaction(
@@ -33,7 +46,7 @@ async function createSuperadmin() {
     { isolationLevel: 'ReadUncommitted' },
   );
 
-  console.log('Superadmin CREATED');
+  done(context);
 }
 
 async function main() {
