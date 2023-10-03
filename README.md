@@ -9,33 +9,33 @@ NestJS Template for Backend REST API
 ## Installation
 
 ```bash
-$ yarn install
+$ pnpm install
 ```
 
 ## Running the app
 
 ```bash
 # development
-$ yarn start
+$ pnpm start
 
 # watch mode
-$ yarn dev
+$ pnpm dev
 
 # production mode
-$ yarn prod
+$ pnpm prod
 ```
 
 ## Test
 
 ```bash
 # unit tests
-$ yarn test
+$ pnpm test
 
 # e2e tests
-$ yarn test:e2e
+$ pnpm test:e2e
 
 # test coverage
-$ yarn test:cov
+$ pnpm test:cov
 ```
 
 ## Links
