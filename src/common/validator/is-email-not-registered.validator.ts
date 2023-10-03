@@ -5,7 +5,7 @@ import {
   ValidatorConstraintInterface,
   registerDecorator,
 } from 'class-validator';
-import { Injectable } from '@nestjs/common';
+import { ConflictException, Injectable } from '@nestjs/common';
 import { UserService } from '../../modules/user/user.service';
 import { responseMessages } from '../messages/response.messages';
 
@@ -16,7 +16,8 @@ export class EmailNotRegistered implements ValidatorConstraintInterface {
 
   async validate(email: string) {
     const user = await this.userService.findByEmail(email);
-    return !user;
+    if (user) throw new ConflictException('email');
+    return true;
   }
   defaultMessage(validationArguments?: ValidationArguments): string {
     return validationArguments.constraints[0] || responseMessages.user.emailConflictError;
