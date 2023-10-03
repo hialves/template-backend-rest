@@ -1,16 +1,11 @@
-import { Injectable, BadRequestException, UnauthorizedException } from '@nestjs/common';
+import { Injectable, BadRequestException } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
 import * as crypto from 'crypto';
 import dayjs from 'dayjs';
 
 import { MailService } from '../../mail/mail.service';
 import { UserService } from '../user/user.service';
-import {
-  DeleteResult,
-  InvalidCredentialsError,
-  NotFoundError,
-  SuccessResult,
-} from '../../common/responses/result-type';
+import { InvalidCredentialsError, NotFoundError, SuccessResult } from '../../common/responses/result-type';
 import { responseMessages } from '../../common/messages/response.messages';
 import { LoginInput } from './dto/login.input';
 import { SessionService } from '../session/session.service';
@@ -64,9 +59,9 @@ export class AuthService {
     const passwordMatch = await bcrypt.compare(input.password, user.password);
     if (!passwordMatch) throw new InvalidCredentialsError();
 
-    const authToken = await this.sessionService.createAuthenticatedSession(user, request);
-    const { authTokenHeaderKey } = apiConfig;
-    response.header(authTokenHeaderKey, authToken);
+    const accessToken = await this.sessionService.createAuthenticatedSession(user, request);
+    const { accessTokenHeaderKey } = apiConfig;
+    response.header(accessTokenHeaderKey, accessToken);
 
     return new SuccessResult(responseMessages.auth.loginSuccess);
   }

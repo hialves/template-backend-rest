@@ -15,6 +15,7 @@ declare global {
       SUPERADMIN_PASSWORD: string;
       SESSION_DURATION: string;
       SWAGGER_PATH: string;
+      EXPOSED_ACCESS_TOKEN_HEADER: string;
     }
   }
 }

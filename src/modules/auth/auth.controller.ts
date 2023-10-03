@@ -12,7 +12,7 @@ export class AuthController {
 
   @IsPublic()
   @Post('login')
-  login(@Body() input: LoginInput, @Req() req: Request, @Res() res: Response) {
+  login(@Body() input: LoginInput, @Req() req: Request, @Res({ passthrough: true }) res: Response) {
     return this.service.login(input, req, res);
   }
 

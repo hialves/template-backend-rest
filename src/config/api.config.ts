@@ -1,6 +1,6 @@
-export const apiConfig: { exposedHeaders: string[]; authTokenHeaderKey: string } = {
+export const apiConfig: { exposedHeaders: string[]; accessTokenHeaderKey: string } = {
   exposedHeaders: [],
-  authTokenHeaderKey: 'api-auth-token',
+  accessTokenHeaderKey: process.env.EXPOSED_ACCESS_TOKEN_HEADER,
 };
 
-apiConfig.exposedHeaders.push(apiConfig.authTokenHeaderKey);
+apiConfig.exposedHeaders.push(apiConfig.accessTokenHeaderKey);
