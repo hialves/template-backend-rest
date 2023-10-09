@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
-import { CacheService } from '../../../connections/cache/cache.service';
+import { CacheService } from '../../../infra/config/cache/cache.service';
 import { responseMessages } from '../../messages/response.messages';
-import { TwilioService } from '../../../connections/twilio/twilio.service';
+import { TwilioService } from '../../../infra/config/twilio/twilio.service';
 import { isPhoneNumber } from 'class-validator';
 import { MessageListInstance } from 'twilio/lib/rest/api/v2010/account/message';
 

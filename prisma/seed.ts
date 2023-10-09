@@ -40,7 +40,7 @@ async function createSuperadmin() {
         },
       });
       await tx.admin.create({
-        data: { name: 'Superadmin', userId: createdUser.id },
+        data: { name: 'Superadmin', email: superadminEmail, userId: createdUser.id },
       });
     },
     { isolationLevel: 'ReadUncommitted' },

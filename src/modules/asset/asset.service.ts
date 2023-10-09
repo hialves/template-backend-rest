@@ -7,7 +7,7 @@ import { PaginatedDto } from '../../common/dto/filter-input.dto';
 import { PaginatedList } from '../../common/dto/paginated-list';
 import { responseMessages } from '../../common/messages/response.messages';
 import { ID } from '../../@types';
-import { PrismaService } from '../../prisma/prisma.service';
+import { PrismaService } from '../../infra/database/prisma/prisma.service';
 import { Asset } from '@prisma/client';
 
 @Injectable()
@@ -71,7 +71,7 @@ export class AssetService implements OnApplicationBootstrap {
 
   private deleteFile(filepath: fs.PathLike): Promise<void> {
     return new Promise((resolve, reject) => {
-      if (!fs.existsSync(filepath)) return reject(responseMessages.notFound(responseMessages.file.entity));
+      if (!fs.existsSync(filepath)) return reject(responseMessages.notFound(responseMessages.file));
       if (!fs.statSync(filepath).isFile()) return reject(responseMessages.file.notFile);
 
       fs.rm(filepath, (error) => {

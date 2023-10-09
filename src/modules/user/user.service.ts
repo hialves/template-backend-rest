@@ -1,5 +1,4 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { CreateUserDto } from './dto/create-user.dto';
 import { ID } from '../../@types';
 import { DeleteResult, NotFoundError } from '../../common/responses/result-type';
 import { responseMessages } from '../../common/messages/response.messages';
@@ -8,7 +7,7 @@ import { PaginatedList } from '../../common/dto/paginated-list';
 import { PaginatedDto } from '../../common/dto/filter-input.dto';
 import { ILoginUser } from '../../common/interfaces/login-user.interface';
 import dayjs from 'dayjs';
-import { PrismaService } from '../../prisma/prisma.service';
+import { PrismaService } from '../../infra/database/prisma/prisma.service';
 import { User } from '@prisma/client';
 
 @Injectable()
@@ -17,10 +16,6 @@ export class UserService {
 
   get repository() {
     return this.prisma.user;
-  }
-
-  async create(input: CreateUserDto, repository = this.repository): Promise<User> {
-    return repository.create({ data: input });
   }
 
   async findAll(filters?: PaginatedDto): Promise<PaginatedList<User>> {
@@ -103,8 +98,8 @@ export class UserService {
   }
 
   notFound(id: ID): NotFoundError {
-    const { entity } = responseMessages.user;
-    return new NotFoundError(responseMessages.notFound(entity), id.toString());
+    const { user } = responseMessages;
+    return new NotFoundError(responseMessages.notFound(user), id.toString());
   }
 
   getCredentials(email: string) {

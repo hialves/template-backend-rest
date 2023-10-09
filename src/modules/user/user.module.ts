@@ -1,10 +1,10 @@
 import { Module } from '@nestjs/common';
 import { UserService } from './user.service';
-import { EmailNotRegistered } from '../../common/validator/is-email-not-registered.validator';
-import { PrismaModule } from '../../prisma/prisma.module';
+import { EmailNotRegistered } from '../../infra/validator/is-email-not-registered.validator';
+import { DatabaseModule } from '../../infra/database/database.module';
 
 @Module({
-  imports: [PrismaModule],
+  imports: [DatabaseModule],
   providers: [UserService, EmailNotRegistered],
   exports: [UserService],
 })

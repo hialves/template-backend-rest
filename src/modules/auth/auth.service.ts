@@ -9,7 +9,7 @@ import { InvalidCredentialsError, NotFoundError, SuccessResult } from '../../com
 import { responseMessages } from '../../common/messages/response.messages';
 import { LoginDto } from './dto/login.dto';
 import { SessionService } from '../session/session.service';
-import { apiConfig } from '../../config/api.config';
+import { apiConfig } from '../../infra/config/api/api.config';
 import { Request, Response } from 'express';
 import { IUserSession } from '../../common/interfaces/session.interface';
 
@@ -25,7 +25,7 @@ export class AuthService {
     const resetToken = crypto.randomBytes(20).toString('hex');
     const token = crypto.createHash('sha256').update(resetToken).digest('hex');
     let user = await this.userService.findByEmail(email);
-    if (!user) throw new NotFoundError(responseMessages.notFound(responseMessages.user.entity), email);
+    if (!user) throw new NotFoundError(responseMessages.notFound(responseMessages.user), email);
     await this.userService.setRecoverPasswordData(user.id, token);
 
     await this.mailService.sendMail({

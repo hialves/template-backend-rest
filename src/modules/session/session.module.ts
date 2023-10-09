@@ -1,10 +1,10 @@
 import { Module } from '@nestjs/common';
 import { SessionService } from './session.service';
-import { CacheModule } from '../../connections/cache/cache.module';
-import { PrismaModule } from '../../prisma/prisma.module';
+import { CacheModule } from '../../infra/config/cache/cache.module';
+import { DatabaseModule } from '../../infra/database/database.module';
 
 @Module({
-  imports: [PrismaModule, CacheModule],
+  imports: [DatabaseModule, CacheModule],
   providers: [SessionService],
   exports: [SessionService],
 })

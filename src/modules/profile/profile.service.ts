@@ -1,11 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { ID } from '../../@types';
 import { UserService } from '../user/user.service';
-import { AdminService } from '../admin/admin.service';
 import { CustomerService } from '../customer/customer.service';
 import { NotFoundError } from '../../common/responses/result-type';
 import { responseMessages } from '../../common/messages/response.messages';
 import { Role } from '@prisma/client';
+import { AdminService } from '../../application/services/admin/admin.service';
 
 @Injectable()
 export class ProfileService {
@@ -27,6 +27,6 @@ export class ProfileService {
       return { ...customer, user };
     }
 
-    throw new NotFoundError(responseMessages.notFound(responseMessages.user.entity));
+    throw new NotFoundError(responseMessages.notFound(responseMessages.user));
   }
 }

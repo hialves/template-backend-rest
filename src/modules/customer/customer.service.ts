@@ -2,8 +2,8 @@ import { Injectable } from '@nestjs/common';
 import { CreateCustomerDto } from './dto/create-customer.dto';
 import { ID } from '../../@types';
 import { UpdateCustomerDto } from './dto/update-customer.dto';
-import { PrismaService } from '../../prisma/prisma.service';
-import { Customer } from '@prisma/client';
+import { PrismaService } from '../../infra/database/prisma/prisma.service';
+import { Customer, Role } from '@prisma/client';
 import { DeleteResult } from '../../common/responses/result-type';
 import { PaginatedDto } from '../../common/dto/filter-input.dto';
 
@@ -16,7 +16,11 @@ export class CustomerService {
   }
 
   async create(input: CreateCustomerDto) {
-    return this.repository.create({ data: input });
+    const { email, password, ...customerData } = input;
+
+    return this.repository.create({
+      data: { ...customerData, email, user: { create: { email, password, role: Role.customer } } },
+    });
   }
 
   async findAll(filters?: PaginatedDto) {

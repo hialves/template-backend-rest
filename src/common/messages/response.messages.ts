@@ -1,7 +1,7 @@
 import { DocumentType } from '../../@types';
 
 export const responseMessages = {
-  notFound: (entity: string = 'Recurso', final = 'o') => `${entity} não encontrad${final}`,
+  notFound: ({ entity = 'Recurso', finalLetter = 'o' }) => `${entity} não encontrad${finalLetter}`,
   delete: {
     success: 'Deletado com sucesso',
     fail: 'Falha ao deletar',
