@@ -1,6 +1,6 @@
 import { AssetService } from './asset.service';
 import { PaginatedDto } from '../../common/dto/filter-input.dto';
-import { IsPublic } from '../../decorators/public.decorator';
+import { IsPublic } from '../../common/decorators/public.decorator';
 import { ID } from '../../@types';
 import { Controller, Get, Param, Query } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';

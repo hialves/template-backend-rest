@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { UserService } from './user.service';
 import { EmailNotRegistered } from '../../common/validator/is-email-not-registered.validator';
-import { PrismaModule } from '../../prisma/prisma.module';
+import { PrismaModule } from '../../shared/prisma/prisma.module';
 
 @Module({
   imports: [PrismaModule],

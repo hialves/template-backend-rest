@@ -9,10 +9,12 @@ export const paths = {
 
 export function generateFolders() {
   Object.entries(paths).forEach(([key, p]) => {
-    if (!fs.existsSync(p)) {
-      const folderUri = p.split(process.cwd())[1].replace(/[\\]/g, '/');
-      Logger.log(`Generating folder for ${key} on ${folderUri}`, 'Paths');
-      fs.mkdirSync(p, { recursive: true });
-    }
+    fs.access(p, fs.constants.F_OK, (err) => {
+      if (err) {
+        const folderUri = p.split(process.cwd())[1].replace(/[\\]/g, '/');
+        Logger.log(`Generating folder for ${key} on ${folderUri}`, 'Paths');
+        fs.mkdir(p, { recursive: true }, (err) => err && console.log(err));
+      }
+    });
   });
 }

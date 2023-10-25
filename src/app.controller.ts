@@ -1,5 +1,5 @@
 import { Controller, Get } from '@nestjs/common';
-import { IsPublic } from './decorators/public.decorator';
+import { IsPublic } from './common/decorators/public.decorator';
 import { version } from '../package.json';
 import { ApiTags } from '@nestjs/swagger';
 import { ConfigService } from '@nestjs/config';

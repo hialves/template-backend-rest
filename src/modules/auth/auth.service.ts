@@ -3,7 +3,7 @@ import * as bcrypt from 'bcrypt';
 import * as crypto from 'crypto';
 import dayjs from 'dayjs';
 
-import { MailService } from '../../mail/mail.service';
+import { MailService } from '../../shared/mail/mail.service';
 import { UserService } from '../user/user.service';
 import { InvalidCredentialsError, NotFoundError, SuccessResult } from '../../common/responses/result-type';
 import { responseMessages } from '../../common/messages/response.messages';

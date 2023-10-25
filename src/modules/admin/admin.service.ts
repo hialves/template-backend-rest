@@ -3,7 +3,7 @@ import { CreateAdminDto } from './dto/create-admin.dto';
 import { ID } from '../../@types';
 import { UserService } from '../user/user.service';
 import { UpdateAdminDto } from './dto/update-admin.dto';
-import { PrismaService } from '../../prisma/prisma.service';
+import { PrismaService } from '../../shared/prisma/prisma.service';
 import { Admin, Role } from '@prisma/client';
 import { PaginatedDto } from '../../common/dto/filter-input.dto';
 import { DeleteResult } from '../../common/responses/result-type';
@@ -25,7 +25,7 @@ export class AdminService {
     const result = await this.prisma.$transaction(
       async (tx) => {
         const user = await this.userService.create({ email, password, role: Role.admin }, tx.user);
-        return tx.admin.create({ data: { name: input.name, userId: user.id } });
+        return tx.admin.create({ data: { name: input.name, email, userId: user.id } });
       },
       { isolationLevel: 'ReadUncommitted' },
     );

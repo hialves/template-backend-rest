@@ -1,6 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { GenerateCodeService } from './generate-code.service';
-import { CacheService } from '../../../connections/cache/cache.service';
+import { CacheService } from '../../../shared/cache/cache.service';
 import { faker } from '@faker-js/faker';
 import { MockCacheService } from '../../mocks/cache.mock';
 
@@ -47,9 +47,7 @@ describe('GenerateCodeService', () => {
 
     it('should return a code with the specified length correctly', async () => {
       const CODE_LENGTH = 6;
-      jest
-        .spyOn(service, 'randomCode')
-        .mockReturnValue(faker.string.numeric({ length: CODE_LENGTH }));
+      jest.spyOn(service, 'randomCode').mockReturnValue(faker.string.numeric({ length: CODE_LENGTH }));
       jest.spyOn(cache, 'get').mockResolvedValue(undefined);
       const result = await service.uniqueCode(CODE_LENGTH);
 

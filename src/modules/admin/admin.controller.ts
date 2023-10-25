@@ -1,4 +1,4 @@
-import { Roles } from '../../decorators/roles.decorator';
+import { Roles } from '../../common/decorators/roles.decorator';
 import { AdminService } from './admin.service';
 import { CreateAdminDto } from './dto/create-admin.dto';
 import { UpdateAdminDto } from './dto/update-admin.dto';
@@ -7,7 +7,7 @@ import { Body, Controller, Delete, Get, Param, Patch, Post, Query } from '@nestj
 import { Role } from '@prisma/client';
 import { PaginatedDto } from '../../common/dto/filter-input.dto';
 import { ApiTags } from '@nestjs/swagger';
-import { IsPublic } from '../../decorators/public.decorator';
+import { IsPublic } from '../../common/decorators/public.decorator';
 
 @ApiTags('Admin')
 @Controller('admins')

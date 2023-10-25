@@ -1,7 +1,7 @@
 import { IsEmail, IsNotEmpty } from 'class-validator';
 import { IsEmailNotRegistered } from '../../../common/validator/is-email-not-registered.validator';
 import { ApiProperty } from '@nestjs/swagger';
-import { HashPassword } from '../../../decorators/hash-password.decorator';
+import { HashPassword } from '../../../common/decorators/hash-password.decorator';
 
 export class CreateAdminDto {
   @ApiProperty()

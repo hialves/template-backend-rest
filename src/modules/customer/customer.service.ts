@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { CreateCustomerDto } from './dto/create-customer.dto';
 import { ID } from '../../@types';
 import { UpdateCustomerDto } from './dto/update-customer.dto';
-import { PrismaService } from '../../prisma/prisma.service';
+import { PrismaService } from '../../shared/prisma/prisma.service';
 import { Customer } from '@prisma/client';
 import { DeleteResult } from '../../common/responses/result-type';
 import { PaginatedDto } from '../../common/dto/filter-input.dto';

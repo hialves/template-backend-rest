@@ -1,6 +1,6 @@
 import { ExecutionContext, Injectable, CanActivate, UnauthorizedException } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
-import { IS_PUBLIC_KEY } from '../../decorators/public.decorator';
+import { IS_PUBLIC_KEY } from '../../common/decorators/public.decorator';
 import { SessionService } from '../session/session.service';
 import { Request } from 'express';
 import { responseMessages } from '../../common/messages/response.messages';

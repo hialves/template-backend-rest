@@ -1,9 +1,9 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { SmsService } from './sms.service';
 import { GenerateCodeService } from '../generate-code/generate-code.service';
-import { CacheService } from '../../../connections/cache/cache.service';
+import { CacheService } from '../../../shared/cache/cache.service';
 import { UserService } from '../../../modules/user/user.service';
-import { TwilioService } from '../../../connections/twilio/twilio.service';
+import { TwilioService } from '../../../shared/twilio/twilio.service';
 import { responseMessages } from '../../messages/response.messages';
 import { MockTwilioService } from '../../mocks/twilio.mock';
 import { MockCacheService } from '../../mocks/cache.mock';

@@ -7,7 +7,7 @@ import { PaginatedDto } from '../../common/dto/filter-input.dto';
 import { PaginatedList } from '../../common/dto/paginated-list';
 import { responseMessages } from '../../common/messages/response.messages';
 import { ID } from '../../@types';
-import { PrismaService } from '../../prisma/prisma.service';
+import { PrismaService } from '../../shared/prisma/prisma.service';
 import { Asset } from '@prisma/client';
 
 @Injectable()

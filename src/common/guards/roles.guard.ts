@@ -1,9 +1,9 @@
 import { Injectable, CanActivate, ExecutionContext } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
-import { ROLES_KEY } from '../../decorators/roles.decorator';
+import { ROLES_KEY } from '../decorators/roles.decorator';
 import { Request } from 'express';
 import { UserService } from '../../modules/user/user.service';
-import { CacheService } from '../../connections/cache/cache.service';
+import { CacheService } from '../../shared/cache/cache.service';
 import { cacheKeys } from '../cache/cache-keys';
 import ms from 'ms';
 import { Role } from '@prisma/client';

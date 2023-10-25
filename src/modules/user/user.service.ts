@@ -8,7 +8,7 @@ import { PaginatedList } from '../../common/dto/paginated-list';
 import { PaginatedDto } from '../../common/dto/filter-input.dto';
 import { ILoginUser } from '../../common/interfaces/login-user.interface';
 import dayjs from 'dayjs';
-import { PrismaService } from '../../prisma/prisma.service';
+import { PrismaService } from '../../shared/prisma/prisma.service';
 import { User } from '@prisma/client';
 
 @Injectable()

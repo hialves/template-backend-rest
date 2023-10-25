@@ -1,7 +1,7 @@
-import { IsPublic } from '../../decorators/public.decorator';
+import { IsPublic } from '../../common/decorators/public.decorator';
 import { CreateCustomerDto } from './dto/create-customer.dto';
 import { CustomerService } from './customer.service';
-import { Roles } from '../../decorators/roles.decorator';
+import { Roles } from '../../common/decorators/roles.decorator';
 import { ID } from '../../@types';
 import { UpdateCustomerDto } from './dto/update-customer.dto';
 import { DeleteResult } from '../../common/responses/result-type';

@@ -1,7 +1,7 @@
 import { AuthService } from './auth.service';
 import { LoginDto } from './dto/login.dto';
 import { Request, Response } from 'express';
-import { IsPublic } from '../../decorators/public.decorator';
+import { IsPublic } from '../../common/decorators/public.decorator';
 import { Body, Controller, Post, Query, Req, Res } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 

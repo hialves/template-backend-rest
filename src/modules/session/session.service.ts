@@ -6,10 +6,10 @@ import { ILoginUser } from '../../common/interfaces/login-user.interface';
 import dayjs from 'dayjs';
 import ms from 'ms';
 import { Request } from 'express';
-import { CacheService } from '../../connections/cache/cache.service';
+import { CacheService } from '../../shared/cache/cache.service';
 import { cacheKeys } from '../../common/cache/cache-keys';
 import { IUserSession } from '../../common/interfaces/session.interface';
-import { PrismaService } from '../../prisma/prisma.service';
+import { PrismaService } from '../../shared/prisma/prisma.service';
 
 @Injectable()
 export class SessionService {

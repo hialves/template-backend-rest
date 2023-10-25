@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { GenerateCodeService } from './generate-code.service';
-import { CacheModule } from '../../../connections/cache/cache.module';
+import { CacheModule } from '../../../shared/cache/cache.module';
 
 @Module({
   imports: [CacheModule],
