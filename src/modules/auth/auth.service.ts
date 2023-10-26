@@ -1,4 +1,4 @@
-import { Injectable, BadRequestException } from '@nestjs/common';
+import { Injectable, BadRequestException, UnauthorizedException } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
 import * as crypto from 'crypto';
 import dayjs from 'dayjs';
@@ -11,7 +11,6 @@ import { LoginDto } from './dto/login.dto';
 import { SessionService } from '../session/session.service';
 import { apiConfig } from '../../config/api.config';
 import { Request, Response } from 'express';
-import { IUserSession } from '../../common/interfaces/session.interface';
 
 @Injectable()
 export class AuthService {
@@ -59,14 +58,24 @@ export class AuthService {
     const passwordMatch = await bcrypt.compare(input.password, user.password);
     if (!passwordMatch) throw new InvalidCredentialsError();
 
-    const accessToken = await this.sessionService.createAuthenticatedSession(user, request);
+    const tokens = await this.sessionService.createAuthenticatedSession(user, request);
     const { accessTokenHeaderKey } = apiConfig;
-    response.header(accessTokenHeaderKey, accessToken);
+    response.header(accessTokenHeaderKey, tokens.accessToken);
 
     return new SuccessResult(responseMessages.auth.loginSuccess);
   }
 
-  async logout(session: IUserSession): Promise<void> {
-    return this.sessionService.deleteSession(session);
+  async refreshToken(refreshToken: string): Promise<string> {
+    try {
+      const payload = await this.sessionService.verifyRefreshToken(refreshToken);
+      return this.sessionService.generateAccessToken(payload);
+    } catch (error) {
+      throw new UnauthorizedException(responseMessages.auth.unauthorized);
+    }
+  }
+
+  async logout(refreshToken: string): Promise<void> {
+    const session = await this.sessionService.findByRefreshToken(refreshToken);
+    return this.sessionService.deleteSession(session.id);
   }
 }

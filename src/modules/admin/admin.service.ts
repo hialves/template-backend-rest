@@ -4,7 +4,7 @@ import { ID } from '../../@types';
 import { UserService } from '../user/user.service';
 import { UpdateAdminDto } from './dto/update-admin.dto';
 import { PrismaService } from '../../shared/prisma/prisma.service';
-import { Admin, Role } from '@prisma/client';
+import { Admin, Role, UserType } from '@prisma/client';
 import { PaginatedDto } from '../../common/dto/filter-input.dto';
 import { DeleteResult } from '../../common/responses/result-type';
 

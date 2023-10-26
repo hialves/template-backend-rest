@@ -6,7 +6,6 @@ import { responseMessages } from '../../common/messages/response.messages';
 import * as bcrypt from 'bcrypt';
 import { PaginatedList } from '../../common/dto/paginated-list';
 import { PaginatedDto } from '../../common/dto/filter-input.dto';
-import { ILoginUser } from '../../common/interfaces/login-user.interface';
 import dayjs from 'dayjs';
 import { PrismaService } from '../../shared/prisma/prisma.service';
 import { User } from '@prisma/client';
@@ -48,17 +47,9 @@ export class UserService {
     });
   }
 
-  async findByEmailLogin(email: string): Promise<ILoginUser | null> {
+  async findByEmailLogin(email: string): Promise<User | null> {
     return this.repository.findUnique({
       where: { email },
-      select: {
-        id: true,
-        email: true,
-        password: true,
-        role: true,
-        createdAt: true,
-        updatedAt: true,
-      },
     });
   }
 

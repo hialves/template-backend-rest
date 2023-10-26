@@ -19,6 +19,7 @@ model Admin {
   createdAt   DateTime  @default(now())
   updatedAt   DateTime? @updatedAt
   name      String   @db.VarChar
+  email      String   @db.VarChar
   assetId   String?  @unique @db.Uuid()
   userId    String?  @unique @db.Uuid()
   asset     Asset?   @relation(fields: [assetId], references: [id], onDelete: NoAction, onUpdate: NoAction)
@@ -41,6 +42,7 @@ model Customer {
   createdAt   DateTime  @default(now())
   updatedAt   DateTime? @updatedAt
   name      String   @db.VarChar
+  email      String   @db.VarChar
   cardToken String?  @db.VarChar
   phone     String?  @db.VarChar
   assetId   String?  @unique @db.Uuid()
@@ -49,13 +51,13 @@ model Customer {
   asset     Asset?   @relation(fields: [assetId], references: [id], onDelete: NoAction, onUpdate: NoAction)
 }
 
+// TODO reimplementar session
 model Session {
   id        String   @id @default(uuid()) @db.Uuid()
   createdAt   DateTime  @default(now())
   updatedAt   DateTime? @updatedAt
   token     String   @unique @db.VarChar
   expiresAt DateTime @db.Timestamp(6)
-  valid     Boolean
   device    String?  @db.VarChar
   ip        String?  @db.VarChar
   userId    String   @db.Uuid()

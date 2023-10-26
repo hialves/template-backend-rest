@@ -4,6 +4,7 @@ import { Request, Response } from 'express';
 import { IsPublic } from '../../common/decorators/public.decorator';
 import { Body, Controller, Post, Query, Req, Res } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
+import { RefreshTokenDto } from './dto/refresh-token.dto';
 
 @ApiTags('Auth')
 @Controller('auth')
@@ -14,6 +15,12 @@ export class AuthController {
   @Post('login')
   login(@Body() input: LoginDto, @Req() req: Request, @Res({ passthrough: true }) res: Response) {
     return this.service.login(input, req, res);
+  }
+
+  @IsPublic()
+  @Post('refresh-token')
+  refreshToken(@Body() input: RefreshTokenDto) {
+    return this.service.refreshToken(input.refreshToken);
   }
 
   @IsPublic()

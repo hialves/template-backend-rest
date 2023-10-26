@@ -13,7 +13,6 @@ declare global {
       EMAIL_PASS: string;
       SUPERADMIN_EMAIL: string;
       SUPERADMIN_PASSWORD: string;
-      SESSION_DURATION: string;
       SWAGGER_PATH: string;
       EXPOSED_ACCESS_TOKEN_HEADER: string;
     }

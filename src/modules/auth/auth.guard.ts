@@ -4,15 +4,12 @@ import { IS_PUBLIC_KEY } from '../../common/decorators/public.decorator';
 import { SessionService } from '../session/session.service';
 import { Request } from 'express';
 import { responseMessages } from '../../common/messages/response.messages';
-import { IUserSession } from '../../common/interfaces/session.interface';
 import * as crypto from 'crypto';
+import { JwtPayload } from '../../common/interfaces/jwt.interface';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
-  constructor(
-    private reflector: Reflector,
-    private sessionService: SessionService,
-  ) {}
+  constructor(private reflector: Reflector) {}
 
   async canActivate(context: ExecutionContext) {
     const isPublic = this.reflector.getAllAndOverride<boolean>(IS_PUBLIC_KEY, [
@@ -22,11 +19,11 @@ export class AuthGuard implements CanActivate {
 
     const request = context.switchToHttp().getRequest() as Request;
     request.requestId = crypto.randomUUID();
-    const token = this.sessionService.getBearerToken(request);
-    let session: IUserSession;
+    const token = SessionService.getBearerToken(request);
+    let session: JwtPayload;
 
     if (token) {
-      session = await this.sessionService.getSession(token);
+      // session = await this.sessionService.getSession(token);
       if (session) request.session = session;
     }
 
