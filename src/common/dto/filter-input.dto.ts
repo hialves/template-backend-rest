@@ -109,14 +109,3 @@ export class FilterDto extends PaginatedDto {
   @IsOptional()
   orderBy: OrderByFilterDto;
 }
-
-export class FilterWithoutDefaultValuesDto {
-  @IsOptional()
-  skip?: number;
-
-  @IsOptional()
-  take?: number;
-
-  @IsOptional()
-  orderBy: OrderByFilterDto;
-}
