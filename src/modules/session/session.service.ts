@@ -39,7 +39,7 @@ export class SessionService {
     return { accessToken, refreshToken };
   }
 
-  async findByRefreshToken(token: string): Promise<Session> {
+  async findByRefreshToken(token: string): Promise<Session | null> {
     return this.repository.findUnique({ where: { token } });
   }
 
@@ -88,9 +88,12 @@ export class SessionService {
     const bearerToken = request.header('Authorization');
 
     if (bearerToken) {
-      const [type, token] = bearerToken.trim().match(/^bearer\s(.+)$/i);
-      if (type && token) {
-        return token;
+      const match = bearerToken.trim().match(/^bearer\s(.+)$/i);
+      if (match) {
+        const [type, token] = match;
+        if (type && token) {
+          return token;
+        }
       }
     }
   }

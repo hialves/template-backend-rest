@@ -30,7 +30,6 @@ export class AuthService {
     await this.mailService.sendMail({
       to: email,
       subject: 'Recuperação de senha',
-      // TODO
       html: `
         <html>
           <body>
@@ -43,7 +42,8 @@ export class AuthService {
   }
 
   async resetPassword(token: string, newPassword: string) {
-    let user = await this.userService.findByRecoverPasswordToken(token);
+    const user = await this.userService.findByRecoverPasswordToken(token);
+    if (!user) return;
 
     if (user.recoverPasswordTokenExpire && dayjs().isAfter(dayjs(user.recoverPasswordTokenExpire))) {
       throw new BadRequestException(responseMessages.auth.invalidCodeOrExpired);
@@ -54,7 +54,7 @@ export class AuthService {
 
   async login(input: LoginDto, request: Request, response: Response) {
     const user = await this.userService.findByEmailLogin(input.email);
-    if (!user) throw new InvalidCredentialsError();
+    if (!user || !user.password) throw new InvalidCredentialsError();
     const passwordMatch = await bcrypt.compare(input.password, user.password);
     if (!passwordMatch) throw new InvalidCredentialsError();
 
@@ -76,6 +76,6 @@ export class AuthService {
 
   async logout(refreshToken: string): Promise<void> {
     const session = await this.sessionService.findByRefreshToken(refreshToken);
-    return this.sessionService.deleteSession(session.id);
+    if (session) return this.sessionService.deleteSession(session.id);
   }
 }

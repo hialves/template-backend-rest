@@ -9,6 +9,7 @@
     "experimentalDecorators": true,
     "sourceMap": true,
     "resolveJsonModule": true,
-    "esModuleInterop": true
+    "esModuleInterop": true,
+    "strictNullChecks": true
   }
 }

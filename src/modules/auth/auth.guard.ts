@@ -6,10 +6,15 @@ import { Request } from 'express';
 import { responseMessages } from '../../common/messages/response.messages';
 import * as crypto from 'crypto';
 import { JwtPayload } from '../../common/interfaces/jwt.interface';
+import jwt from 'jsonwebtoken';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
-  constructor(private reflector: Reflector) {}
+  constructor(
+    private reflector: Reflector,
+    private configService: ConfigService,
+  ) {}
 
   async canActivate(context: ExecutionContext) {
     const isPublic = this.reflector.getAllAndOverride<boolean>(IS_PUBLIC_KEY, [
@@ -20,16 +25,13 @@ export class AuthGuard implements CanActivate {
     const request = context.switchToHttp().getRequest() as Request;
     request.requestId = crypto.randomUUID();
     const token = SessionService.getBearerToken(request);
-    let session: JwtPayload;
-
+    let session: JwtPayload | undefined;
     if (token) {
-      // session = await this.sessionService.getSession(token);
+      session = jwt.verify(token, this.configService.get('JWT_ACCESS_TOKEN_SECRET_KEY')!) as JwtPayload;
       if (session) request.session = session;
     }
 
-    if (isPublic) {
-      return true;
-    }
+    if (isPublic) return true;
 
     if (!token || !session) throw new UnauthorizedException(responseMessages.auth.unauthorized);
 
