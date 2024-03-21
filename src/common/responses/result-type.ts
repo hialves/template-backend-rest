@@ -71,7 +71,7 @@ export class ValidationError {
         return error;
       }
 
-      return new ValidationKey(error.property, Object.values(error.constraints).join(', '));
+      return new ValidationKey(error.property, error.constraints ? Object.values(error.constraints).join(', ') : '');
     });
     this.message = message;
   }

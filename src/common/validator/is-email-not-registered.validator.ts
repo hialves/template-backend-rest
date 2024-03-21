@@ -20,7 +20,7 @@ export class EmailNotRegistered implements ValidatorConstraintInterface {
     return true;
   }
   defaultMessage(validationArguments?: ValidationArguments): string {
-    return validationArguments.constraints[0] || responseMessages.user.emailConflictError;
+    return validationArguments?.constraints[0] || responseMessages.user.emailConflictError;
   }
 }
 
