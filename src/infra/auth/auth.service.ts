@@ -1,31 +1,35 @@
-import { Injectable, BadRequestException, UnauthorizedException } from '@nestjs/common';
+import { Injectable, UnauthorizedException, HttpStatus } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
 import * as crypto from 'crypto';
 import dayjs from 'dayjs';
 
-import { UserService } from '../../modules/user/user.service';
 import { InvalidCredentialsError, NotFoundError } from '../../presentation/responses/result-type';
 import { responseMessages } from '../../application/messages/response.messages';
-import { LoginDto } from '../../presentation/dto/login.dto';
+import { LoginDto } from '../../presentation/dto/auth/login.dto';
 import { SessionService } from './session.service';
 import { apiConfig } from '../../config/api.config';
 import { Request, Response } from 'express';
 import { MailService } from '../../application/interfaces/mail-service.interface';
+import { PasswordService } from './password.service';
+import { ApplicationError } from '../../application/errors/application-error';
+import { UserPrismaRepository } from '../persistence/prisma/repositories/user.repository';
 
 @Injectable()
 export class AuthService {
   constructor(
     private mailService: MailService,
-    private userService: UserService,
+    private userRepository: UserPrismaRepository,
     private sessionService: SessionService,
+    private passwordService: PasswordService,
   ) {}
 
   async sendRecoverPasswordEmail(email: string) {
     const resetToken = crypto.randomBytes(20).toString('hex');
     const token = crypto.createHash('sha256').update(resetToken).digest('hex');
-    let user = await this.userService.findByEmail(email);
+    let user = await this.userRepository.findByEmail(email);
     if (!user) throw new NotFoundError(responseMessages.notFound(responseMessages.user.entity), email);
-    await this.userService.setRecoverPasswordData(user.id, token);
+    user.setRecoverPasswordData(token);
+    await this.userRepository.update(user);
 
     await this.mailService.sendMail({
       to: email,
@@ -42,24 +46,25 @@ export class AuthService {
   }
 
   async resetPassword(token: string, newPassword: string) {
-    const user = await this.userService.findByRecoverPasswordToken(token);
+    const user = await this.userRepository.findByRecoverPasswordToken(token);
     if (!user) return;
 
     if (user.recoverPasswordTokenExpire && dayjs().isAfter(dayjs(user.recoverPasswordTokenExpire))) {
-      throw new BadRequestException(responseMessages.auth.invalidCodeOrExpired);
+      return new ApplicationError(responseMessages.auth.invalidCodeOrExpired, undefined, HttpStatus.BAD_REQUEST);
     }
-
-    await this.userService.resetPassword(user.id, newPassword);
+    const passwordHash = await this.passwordService.hashPassword(newPassword);
+    user.resetPassword(passwordHash);
+    await this.userRepository.update(user);
   }
 
   // TODO: remover request e response
   async login(input: LoginDto, request: Request, response: Response) {
-    const user = await this.userService.findByEmailLogin(input.email);
-    if (!user || !user.password) throw new InvalidCredentialsError();
+    const user = await this.userRepository.findByEmail(input.email);
+    if (!user || !user.password || !user.id) throw new InvalidCredentialsError();
     const passwordMatch = await bcrypt.compare(input.password, user.password);
     if (!passwordMatch) throw new InvalidCredentialsError();
 
-    const tokens = await this.sessionService.createAuthenticatedSession(user, request);
+    const tokens = await this.sessionService.createAuthenticatedSession({ ...user, id: user.id }, request);
     const { accessTokenHeaderKey } = apiConfig;
     response.header(accessTokenHeaderKey, tokens.accessToken);
   }

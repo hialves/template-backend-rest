@@ -16,10 +16,10 @@ enum Role {
 
 model Admin {
   id        String   @id @default(uuid()) @db.Uuid()
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime? @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
   name      String   @db.VarChar
-  email      String   @db.VarChar
+  email     String   @db.VarChar
   assetId   String?  @unique @db.Uuid()
   userId    String?  @unique @db.Uuid()
   asset     Asset?   @relation(fields: [assetId], references: [id], onDelete: NoAction, onUpdate: NoAction)
@@ -28,8 +28,8 @@ model Admin {
 
 model Asset {
   id        String    @id @default(uuid()) @db.Uuid()
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime? @updatedAt
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
   filename  String    @db.VarChar
   source    String    @db.VarChar
   mimeType  String    @db.VarChar
@@ -39,10 +39,10 @@ model Asset {
 
 model Customer {
   id        String   @id @default(uuid()) @db.Uuid()
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime? @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
   name      String   @db.VarChar
-  email      String   @db.VarChar
+  email     String   @db.VarChar
   cardToken String?  @db.VarChar
   phone     String?  @db.VarChar
   assetId   String?  @unique @db.Uuid()
@@ -53,8 +53,8 @@ model Customer {
 
 model Session {
   id        String   @id @default(uuid()) @db.Uuid()
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime? @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
   token     String   @unique @db.VarChar
   expiresAt DateTime @db.Timestamp(6)
   device    String?  @db.VarChar
@@ -65,8 +65,8 @@ model Session {
 
 model User {
   id                         String    @id @default(uuid()) @db.Uuid()
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime? @updatedAt
+  createdAt                  DateTime  @default(now())
+  updatedAt                  DateTime  @updatedAt
   password                   String?   @db.VarChar
   email                      String    @unique @db.VarChar
   recoverPasswordToken       String?   @db.VarChar

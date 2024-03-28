@@ -4,11 +4,14 @@ import { JwtService, JwtSignOptions } from '@nestjs/jwt';
 import dayjs from 'dayjs';
 import ms from 'ms';
 import { Request } from 'express';
-import { Session, User } from '@prisma/client';
+import { Session } from '@prisma/client';
 
 import { PrismaService } from '../persistence/prisma/prisma.service';
 import { JwtPayload } from '../interfaces/jwt.interface';
 import { ID } from '../../@types';
+import { User } from '../../domain/entities/user';
+
+type UserSession = Required<Pick<User, 'id' | 'email' | 'role'>>;
 
 @Injectable()
 export class SessionService {
@@ -22,14 +25,18 @@ export class SessionService {
     return this.prisma.session;
   }
 
-  async createAuthenticatedSession(user: User, request: Request) {
-    const { id: sub, ...rest } = user;
-    const accessToken = await this.generateAccessToken({ sub, ...rest });
+  async createAuthenticatedSession(
+    user: UserSession,
+    request: Request,
+  ): Promise<{ accessToken: string; refreshToken: string }> {
+    const { id: sub, email, role } = user;
+
+    const accessToken = await this.generateAccessToken({ sub, email, role });
     const refreshToken = await this.generateRefreshToken(user);
     await this.repository.create({
       data: {
         token: refreshToken,
-        userId: user.id,
+        userId: sub,
         expiresAt: this.getExpiryDate(),
         device: request.headers['user-agent'],
         ip: request.ip,
@@ -70,7 +77,7 @@ export class SessionService {
     return this.jwtService.signAsync(payload);
   }
 
-  private generateRefreshToken(user: User): Promise<string> {
+  private generateRefreshToken(user: UserSession): Promise<string> {
     return this.jwtService.signAsync(
       { sub: user.id, email: user.email, role: user.role } as JwtPayload,
       this.refreshTokenOptions,

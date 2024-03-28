@@ -1,9 +1,9 @@
 import { AuthService } from '../../infra/auth/auth.service';
-import { LoginDto } from '../dto/login.dto';
+import { LoginDto } from '../dto/auth/login.dto';
 import { Request, Response } from 'express';
 import { Body, Controller, Post, Query, Req, Res } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
-import { RefreshTokenDto } from '../dto/refresh-token.dto';
+import { RefreshTokenDto } from '../dto/auth/refresh-token.dto';
 import { IsPublic } from '../decorators/public.decorator';
 
 @ApiTags('Auth')
