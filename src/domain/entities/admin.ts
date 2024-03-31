@@ -1,19 +1,17 @@
-import dayjs from 'dayjs';
-import { nullCoalesce } from '../helpers/null-coalesce';
 import { ID } from '../../@types';
 
 export interface AdminFields {
-  id?: string;
-  createdAt?: Date;
-  updatedAt?: Date;
+  id: ID;
+  createdAt: Date;
+  updatedAt: Date;
   name: string;
   email: string;
-  assetId?: ID | null;
-  userId?: ID | null;
+  assetId: ID | null;
+  userId: ID | null;
 }
 
-export class Admin {
-  id?: string;
+export class Admin implements AdminFields {
+  id: ID;
   createdAt: Date;
   updatedAt: Date;
   name: string;
@@ -23,11 +21,11 @@ export class Admin {
 
   constructor(input: AdminFields) {
     this.id = input.id;
-    this.createdAt = input.createdAt || dayjs().toDate();
-    this.updatedAt = input.updatedAt || dayjs().toDate();
+    this.createdAt = input.createdAt;
+    this.updatedAt = input.updatedAt;
     this.name = input.name;
     this.email = input.email;
-    this.assetId = nullCoalesce(this.assetId);
-    this.userId = nullCoalesce(this.userId);
+    this.assetId = input.assetId;
+    this.userId = input.userId;
   }
 }
