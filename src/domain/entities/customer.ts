@@ -1,39 +1,34 @@
-import dayjs from 'dayjs';
-import { nullCoalesce } from '../helpers/null-coalesce';
 import { ID } from '../../@types';
 
 export interface CustomerFields {
-  id?: string;
-  createdAt?: Date;
-  updatedAt?: Date;
-  name: string;
-  email: string;
-  cardToken?: string | null;
-  phone?: string | null;
-  assetId?: ID | null;
-  userId?: ID | null;
-}
-
-export class Customer {
-  id?: string;
+  id: string;
   createdAt: Date;
   updatedAt: Date;
   name: string;
   email: string;
-  cardToken: string | null;
+  phone: string | null;
+  assetId: ID | null;
+  userId: ID | null;
+}
+
+export class Customer implements CustomerFields {
+  id: string;
+  createdAt: Date;
+  updatedAt: Date;
+  name: string;
+  email: string;
   phone: string | null;
   assetId: ID | null;
   userId: ID | null;
 
   constructor(input: CustomerFields) {
     this.id = input.id;
-    this.createdAt = input.createdAt || dayjs().toDate();
-    this.updatedAt = input.updatedAt || dayjs().toDate();
+    this.createdAt = input.createdAt;
+    this.updatedAt = input.updatedAt;
     this.name = input.name;
     this.email = input.email;
-    this.cardToken = nullCoalesce(this.cardToken);
-    this.phone = nullCoalesce(this.phone);
-    this.assetId = nullCoalesce(this.assetId);
-    this.userId = nullCoalesce(this.userId);
+    this.phone = input.phone;
+    this.assetId = input.assetId;
+    this.userId = input.userId;
   }
 }

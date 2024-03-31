@@ -7,7 +7,6 @@ export class UpdateCustomerData {
   updatedAt?: Date;
   name?: string;
   email?: string;
-  cardToken?: string | null;
   phone?: string | null;
   assetId?: ID | null;
   userId?: ID | null;

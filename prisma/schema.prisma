@@ -43,7 +43,6 @@ model Customer {
   updatedAt DateTime @updatedAt
   name      String   @db.VarChar
   email     String   @db.VarChar
-  cardToken String?  @db.VarChar
   phone     String?  @db.VarChar
   assetId   String?  @unique @db.Uuid()
   userId    String?  @unique @db.Uuid()

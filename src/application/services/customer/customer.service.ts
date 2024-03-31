@@ -33,7 +33,6 @@ export class CustomerService {
       ...existsCustomer,
       email: updateData.email || existsCustomer.email,
       name: updateData.name || existsCustomer.name,
-      cardToken: updateData.cardToken || existsCustomer.cardToken,
       phone: updateData.phone || existsCustomer.phone,
     };
     const customer = new Customer(customerFields);
