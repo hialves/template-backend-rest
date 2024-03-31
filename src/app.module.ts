@@ -1,11 +1,9 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
-import { AdminModule } from './modules/admin/admin.module';
-import { CustomerModule } from './modules/customer/customer.module';
+import { CustomerModule } from './infra/modules/customer.module';
 import { AuthModule } from './infra/modules/auth.module';
 import { NodeMailerModule } from './infra/frameworks/mail/nodemailer.module';
 import { ConfigModule } from '@nestjs/config';
-import { UserModule } from './modules/user/user.module';
 import { APP_GUARD, APP_INTERCEPTOR } from '@nestjs/core';
 import { AuthGuard } from './infra/security/guards/auth.guard';
 import { CacheModule } from './infra/frameworks/cache/cache.module';
@@ -21,11 +19,9 @@ import { LoggingInterceptor } from './presentation/interceptors/logging.intercep
       isGlobal: true,
     }),
     PrometheusModule.register(),
-    AdminModule,
     AuthModule,
     CustomerModule,
     NodeMailerModule,
-    UserModule,
     CacheModule,
     ProfileModule,
     AssetModule,

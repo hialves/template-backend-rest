@@ -4,6 +4,7 @@ import { ID } from '../../../../@types';
 import { UserRepository } from '../../../../application/repositories/user-repository.interface';
 import { User } from '../../../../domain/entities/user';
 import { User as PrismaUser } from '@prisma/client';
+import { Customer } from '../../../../domain/entities/customer';
 
 function toDomain(result: PrismaUser | null): User | null {
   if (result) return new User(result);

@@ -1,4 +1,4 @@
-import { Body, Controller, Param, Patch, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post, Query } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { CreateAdminDto } from '../dto/admin/create-admin.dto';
 import { PrismaService } from '../../infra/persistence/prisma/prisma.service';
@@ -34,11 +34,15 @@ export class AdminController {
     return this.service.create(admin, user);
   }
 
-  async findAll(filters?: PaginatedDto) {
+  @Roles(Role.super_admin)
+  @Get()
+  async findAll(@Query() filters?: PaginatedDto) {
     return this.repository.findMany(filters);
   }
 
-  findOne(id: ID) {
+  @Roles(Role.super_admin)
+  @Get(':id')
+  findOne(@Param('id') id: ID) {
     return this.repository.findUnique({ where: { id } });
   }
 
@@ -49,7 +53,9 @@ export class AdminController {
     return this.service.update(id, data);
   }
 
-  async remove(id: ID) {
+  @Roles(Role.super_admin)
+  @Delete(':id')
+  async remove(@Param('id') id: ID) {
     await this.repository.delete({ where: { id } });
   }
 }
