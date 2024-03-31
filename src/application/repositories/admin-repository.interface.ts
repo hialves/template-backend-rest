@@ -1,9 +1,9 @@
 import { ID } from '../../@types';
 import { Admin } from '../../domain/entities/admin';
-import { User } from '../../domain/entities/user';
+import { CreateAdminData } from '../../domain/valueobjects/create-admin-data';
 
 export abstract class AdminRepository {
-  abstract create(admin: Admin, user: User): Promise<Admin>;
+  abstract create(input: CreateAdminData): Promise<Admin>;
   abstract exists(id: ID): Promise<boolean>;
   abstract findById(id: ID): Promise<Admin | null>;
   abstract findByEmail(email: string): Promise<Admin | null>;

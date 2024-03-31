@@ -1,9 +1,9 @@
 import { ID } from '../../@types';
 import { Customer } from '../../domain/entities/customer';
-import { User } from '../../domain/entities/user';
+import { CreateCustomerData } from '../../domain/valueobjects/create-customer-data';
 
 export abstract class CustomerRepository {
-  abstract create(admin: Customer, user: User): Promise<Customer>;
+  abstract create(input: CreateCustomerData): Promise<Customer>;
   abstract exists(id: ID): Promise<boolean>;
   abstract findById(id: ID): Promise<Customer | null>;
   abstract findByEmail(email: string): Promise<Customer | null>;

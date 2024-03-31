@@ -4,7 +4,7 @@ import { ID } from '../../../../@types';
 import { Admin } from '../../../../domain/entities/admin';
 import { Admin as PrismaAdmin } from '@prisma/client';
 import { AdminRepository } from '../../../../application/repositories/admin-repository.interface';
-import { User } from '../../../../domain/entities/user';
+import { CreateAdminData } from '../../../../domain/valueobjects/create-admin-data';
 
 function toDomain(result: PrismaAdmin | null): Admin | null {
   if (result) return new Admin(result);
@@ -19,12 +19,13 @@ export class AdminPrismaRepository implements AdminRepository {
     return this.prisma.admin;
   }
 
-  async create(admin: Admin, user: User) {
+  async create(input: CreateAdminData) {
+    const { password, role, ...adminData } = input.data;
     const result = await this.prisma.$transaction(
       async (tx) => {
-        const createdUser = await tx.user.create({ data: user });
-        admin.userId = createdUser.id;
-        return tx.admin.create({ data: admin });
+        return tx.admin.create({
+          data: { ...adminData, user: { create: { email: adminData.email, password, role } } },
+        });
       },
       { isolationLevel: 'ReadUncommitted' },
     );

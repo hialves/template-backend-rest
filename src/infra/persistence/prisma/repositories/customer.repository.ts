@@ -1,10 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma.service';
 import { ID } from '../../../../@types';
-import { User } from '../../../../domain/entities/user';
 import { Customer as PrismaCustomer } from '@prisma/client';
 import { Customer } from '../../../../domain/entities/customer';
 import { CustomerRepository } from '../../../../application/repositories/customer-repository.interface';
+import { CreateCustomerData } from '../../../../domain/valueobjects/create-customer-data';
 
 function toDomain(result: PrismaCustomer | null): Customer | null {
   if (result) return new Customer(result);
@@ -19,12 +19,13 @@ export class CustomerPrismaRepository implements CustomerRepository {
     return this.prisma.customer;
   }
 
-  async create(customer: Customer, user: User) {
+  async create(input: CreateCustomerData) {
+    const { password, role, ...customerData } = input.data;
     const result = await this.prisma.$transaction(
       async (tx) => {
-        const createdUser = await tx.user.create({ data: user });
-        customer.userId = createdUser.id;
-        return tx.customer.create({ data: customer });
+        return tx.customer.create({
+          data: { ...customerData, user: { create: { email: customerData.email, password, role } } },
+        });
       },
       { isolationLevel: 'ReadUncommitted' },
     );

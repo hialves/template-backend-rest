@@ -97,8 +97,8 @@ export class SessionService {
     if (bearerToken) {
       const match = bearerToken.trim().match(/^bearer\s(.+)$/i);
       if (match) {
-        const [type, token] = match;
-        if (type && token) {
+        const [_, token] = match;
+        if (token) {
           return token;
         }
       }

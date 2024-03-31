@@ -1,23 +1,22 @@
 import { Role } from '@prisma/client';
 import dayjs from 'dayjs';
 import { ID } from '../../@types';
-import { nullCoalesce } from '../helpers/null-coalesce';
 
 interface UserFields {
-  id?: ID;
-  createdAt?: Date;
-  updatedAt?: Date;
+  id: ID;
+  createdAt: Date;
+  updatedAt: Date;
   password: string | null;
   email: string;
-  recoverPasswordToken?: string | null;
-  recoverPasswordTokenExpire?: Date | null;
-  googleToken?: string | null;
+  recoverPasswordToken: string | null;
+  recoverPasswordTokenExpire: Date | null;
+  googleToken: string | null;
   role: Role | null;
-  lastLogin?: Date | null;
+  lastLogin: Date | null;
 }
 
-export class User {
-  id?: ID;
+export class User implements UserFields {
+  id: ID;
   createdAt: Date;
   updatedAt: Date;
   password: string | null;
@@ -30,15 +29,15 @@ export class User {
 
   constructor(input: UserFields) {
     this.id = input.id;
-    this.createdAt = input.createdAt || dayjs().toDate();
-    this.updatedAt = input.updatedAt || dayjs().toDate();
+    this.createdAt = input.createdAt;
+    this.updatedAt = input.updatedAt;
     this.password = input.password;
     this.email = input.email;
-    this.recoverPasswordToken = nullCoalesce(input.recoverPasswordToken);
-    this.recoverPasswordTokenExpire = nullCoalesce(input.recoverPasswordTokenExpire);
-    this.googleToken = nullCoalesce(input.googleToken);
+    this.recoverPasswordToken = input.recoverPasswordToken;
+    this.recoverPasswordTokenExpire = input.recoverPasswordTokenExpire;
+    this.googleToken = input.googleToken;
     this.role = input.role;
-    this.lastLogin = nullCoalesce(input.lastLogin);
+    this.lastLogin = input.lastLogin;
   }
 
   setLastLogin() {

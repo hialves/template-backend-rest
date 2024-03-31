@@ -3,15 +3,14 @@ import { ApiTags } from '@nestjs/swagger';
 import { CreateAdminDto } from '../dto/admin/create-admin.dto';
 import { PrismaService } from '../../infra/persistence/prisma/prisma.service';
 import { Role } from '@prisma/client';
-import { User } from '../../domain/entities/user';
 import { Roles } from '../decorators/roles.decorator';
 import { PaginatedDto } from '../dto/list/filter-input.dto';
 import { ID } from '../../@types';
 import { UpdateAdminDto } from '../dto/admin/update-admin.dto';
 import { UpdateAdminData } from '../../domain/valueobjects/update-admin-data';
 import { AdminService } from '../../application/services/admin/admin.service';
-import { Admin } from '../../domain/entities/admin';
 import { IsPublic } from '../decorators/public.decorator';
+import { CreateAdminData } from '../../domain/valueobjects/create-admin-data';
 
 @ApiTags('Admin')
 @Controller('admin')
@@ -27,11 +26,10 @@ export class AdminController {
 
   @IsPublic()
   @Post()
-  create(@Body() input: CreateAdminDto) {
-    const { email, name, password } = input;
-    const admin = new Admin({ email, name });
-    const user = new User({ email, password, role: Role.admin });
-    return this.service.create(admin, user);
+  create(@Body() dto: CreateAdminDto) {
+    const { email, name, password } = dto;
+    const input = new CreateAdminData({ email, name, password, role: Role.admin });
+    return this.service.create(input);
   }
 
   @Roles(Role.super_admin)
@@ -48,8 +46,8 @@ export class AdminController {
 
   @Roles(Role.super_admin, Role.admin, Role.manager)
   @Patch(':id')
-  update(@Param('id') id: ID, @Body() input: UpdateAdminDto) {
-    const data = new UpdateAdminData(input);
+  update(@Param('id') id: ID, @Body() dto: UpdateAdminDto) {
+    const data = new UpdateAdminData(dto);
     return this.service.update(id, data);
   }
 

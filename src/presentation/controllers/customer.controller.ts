@@ -12,6 +12,7 @@ import { Customer } from '../../domain/entities/customer';
 import { User } from '../../domain/entities/user';
 import { UpdateCustomerData } from '../../domain/valueobjects/update-customer-data';
 import { PrismaService } from '../../infra/persistence/prisma/prisma.service';
+import { CreateCustomerData } from '../../domain/valueobjects/create-customer-data';
 
 @ApiTags('Customer')
 @Controller('customers')
@@ -27,11 +28,10 @@ export class CustomerController {
 
   @IsPublic()
   @Post()
-  createCustomer(@Body() input: CreateCustomerDto) {
-    const { email, name, phone, password } = input;
-    const admin = new Customer({ email, name, phone });
-    const user = new User({ email, password, role: Role.customer });
-    return this.service.create(admin, user);
+  createCustomer(@Body() dto: CreateCustomerDto) {
+    const { email, name, phone, password } = dto;
+    const input = new CreateCustomerData({ name, email, password, phone, role: Role.customer });
+    return this.service.create(input);
   }
 
   @Roles(Role.super_admin)
@@ -48,8 +48,8 @@ export class CustomerController {
 
   @Roles(Role.super_admin, Role.customer)
   @Patch(':id')
-  update(@Param('id') id: ID, @Body() input: UpdateCustomerDto) {
-    const data = new UpdateCustomerData(input);
+  update(@Param('id') id: ID, @Body() dto: UpdateCustomerDto) {
+    const data = new UpdateCustomerData(dto);
     return this.service.update(id, data);
   }
 
