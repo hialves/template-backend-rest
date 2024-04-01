@@ -1,7 +1,8 @@
 import { Request } from 'express';
-import { ProfileService } from './profile.service';
-import { Controller, Get, Req } from '@nestjs/common';
+import { Controller, Get, Param, Req } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ProfileService } from '../../application/services/profile/profile.service';
+import { ID } from '../../@types';
 
 @ApiTags('Profile')
 @Controller('profile')
@@ -11,6 +12,11 @@ export class ProfileController {
   @ApiOperation({ description: 'Get own profile based on current session', summary: 'Own profile' })
   @Get()
   me(@Req() req: Request) {
-    return this.profileService.getProfile(req.session.userId);
+    return this.profileService.getProfile(req.session!.userId);
+  }
+
+  @Get(':id')
+  profileById(@Param('id') id: ID) {
+    return this.profileService.getProfile(id);
   }
 }
