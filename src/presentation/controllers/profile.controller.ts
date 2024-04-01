@@ -3,6 +3,7 @@ import { Controller, Get, Param, Req } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { ProfileService } from '../../application/services/profile/profile.service';
 import { ID } from '../../@types';
+import { IsPublic } from '../decorators/public.decorator';
 
 @ApiTags('Profile')
 @Controller('profile')
@@ -15,6 +16,7 @@ export class ProfileController {
     return this.profileService.getProfile(req.session!.userId);
   }
 
+  @IsPublic()
   @Get(':id')
   profileById(@Param('id') id: ID) {
     return this.profileService.getProfile(id);
