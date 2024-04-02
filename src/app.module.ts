@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
+import { AppController } from './presentation/controllers/app.controller';
 import { CustomerModule } from './infra/modules/customer.module';
 import { AuthModule } from './infra/modules/auth.module';
 import { NodeMailerModule } from './infra/frameworks/mail/nodemailer.module';
@@ -7,8 +7,7 @@ import { ConfigModule } from '@nestjs/config';
 import { APP_GUARD, APP_INTERCEPTOR } from '@nestjs/core';
 import { AuthGuard } from './infra/security/guards/auth.guard';
 import { CacheModule } from './infra/frameworks/cache/cache.module';
-import { ProfileModule } from './modules/profile/profile.module';
-import { AssetModule } from './modules/asset/asset.module';
+import { AssetModule } from './infra/modules/asset.module';
 import { PrometheusModule } from '@willsoto/nestjs-prometheus';
 import { RolesGuard } from './infra/security/guards/roles.guard';
 import { LoggingInterceptor } from './presentation/interceptors/logging.interceptor';
@@ -23,7 +22,6 @@ import { LoggingInterceptor } from './presentation/interceptors/logging.intercep
     CustomerModule,
     NodeMailerModule,
     CacheModule,
-    ProfileModule,
     AssetModule,
   ],
   controllers: [AppController],

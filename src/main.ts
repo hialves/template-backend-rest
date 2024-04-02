@@ -4,7 +4,7 @@ import { AppModule } from './app.module';
 import { ConfigService } from '@nestjs/config';
 import { Logger, ValidationPipe } from '@nestjs/common';
 import { json } from 'express';
-import { generateFolders } from './utils/generate-folders';
+import { generateFolders } from './infra/persistence/asset/generate-folders';
 import { apiConfig } from './config/api.config';
 import { useContainer } from 'class-validator';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
