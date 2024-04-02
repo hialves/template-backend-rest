@@ -16,6 +16,7 @@ export class ProfileController {
     return this.profileService.getProfile(req.session!.userId);
   }
 
+  @ApiOperation({ description: 'Get a profile based on provided id', summary: 'Profile by id' })
   @IsPublic()
   @Get(':id')
   profileById(@Param('id') id: ID) {
