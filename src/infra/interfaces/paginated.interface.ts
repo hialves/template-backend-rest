@@ -1,10 +1,10 @@
-import { ID } from '../../@types'
+import { ID } from '../../@types';
 
 interface Node {
-  id: ID
+  id: ID;
 }
 
 export interface PaginatedResult<T extends Node> {
-  items: Array<T>
-  totalItems: number
+  items: Array<T>;
+  totalItems: number;
 }
