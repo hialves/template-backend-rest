@@ -1,11 +1,11 @@
 import 'dotenv/config';
 import { NestFactory } from '@nestjs/core';
+import cookieParser from 'cookie-parser';
 import { AppModule } from './app.module';
 import { ConfigService } from '@nestjs/config';
 import { Logger, ValidationPipe } from '@nestjs/common';
 import { json } from 'express';
 import { generateFolders } from './infra/persistence/asset/generate-folders';
-import { apiConfig } from './config/api.config';
 import { useContainer } from 'class-validator';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { version } from '../package.json';
@@ -13,8 +13,9 @@ import { version } from '../package.json';
 async function bootstrap() {
   generateFolders();
   const app = await NestFactory.create(AppModule, { bodyParser: false });
-  app.enableCors({ exposedHeaders: apiConfig.exposedHeaders, origin: '*' });
+  app.enableCors({ origin: '*' });
   app.use(json({ limit: '10mb' }));
+  app.use(cookieParser());
   app.useGlobalPipes(new ValidationPipe({ transform: true }));
 
   const configService = app.get(ConfigService);

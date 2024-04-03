@@ -2,18 +2,18 @@ import { Injectable, CanActivate, ExecutionContext } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { ROLES_KEY } from '../../../presentation/decorators/roles.decorator';
 import { Request } from 'express';
-import { UserService } from '../../../modules/user/user.service';
-import { CacheService } from '../../frameworks/cache/cache.service';
-import { cacheKeys } from '../cache/cache-keys';
 import ms from 'ms';
 import { Role } from '@prisma/client';
+import { cacheKeys } from '../../../application/cache/cache-keys';
+import { CacheServiceImpl } from '../../frameworks/cache/cache.service';
+import { UserRepository } from '../../../application/repositories/user-repository.interface';
 
 @Injectable()
 export class RolesGuard implements CanActivate {
   constructor(
     private reflector: Reflector,
-    private userService: UserService,
-    private cache: CacheService,
+    private userRepository: UserRepository,
+    private cache: CacheServiceImpl,
   ) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
@@ -27,9 +27,15 @@ export class RolesGuard implements CanActivate {
     const request = context.switchToHttp().getRequest() as Request;
     const session = request.session;
 
-    const key = cacheKeys.session.userById(session?.sub);
-    const user = await this.cache.getAndSave(key, () => this.userService.findOne(session.userId), ms('1hour'));
+    if (session?.userId) {
+      const key = cacheKeys.session.userById(session?.userId);
+      const user = await this.cache.getAndSave(key, () => this.userRepository.findById(session?.userId), ms('1hour'));
+      if (!user) return false;
+      if (user.role === Role.super_admin) return true;
 
-    return requiredRoles.some((role) => user.role === role);
+      return requiredRoles.some((role) => user.role === role);
+    }
+
+    return false;
   }
 }

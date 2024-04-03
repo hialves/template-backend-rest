@@ -11,6 +11,9 @@ import { AssetModule } from './infra/modules/asset.module';
 import { PrometheusModule } from '@willsoto/nestjs-prometheus';
 import { RolesGuard } from './infra/security/guards/roles.guard';
 import { LoggingInterceptor } from './presentation/interceptors/logging.interceptor';
+import { ProfileModule } from './infra/modules/profile.module';
+import { RepositoryModule } from './infra/modules/repository.module';
+import { AdminModule } from './infra/modules/admin.module';
 
 @Module({
   imports: [
@@ -23,6 +26,9 @@ import { LoggingInterceptor } from './presentation/interceptors/logging.intercep
     NodeMailerModule,
     CacheModule,
     AssetModule,
+    ProfileModule,
+    RepositoryModule,
+    AdminModule,
   ],
   controllers: [AppController],
   providers: [

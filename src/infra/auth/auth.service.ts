@@ -7,7 +7,6 @@ import { InvalidCredentialsError, NotFoundError } from '../../presentation/respo
 import { responseMessages } from '../../application/messages/response.messages';
 import { LoginDto } from '../../presentation/dto/auth/login.dto';
 import { SessionService } from './session.service';
-import { apiConfig } from '../../config/api.config';
 import { Request, Response } from 'express';
 import { MailService } from '../../application/interfaces/mail-service.interface';
 import { PasswordService } from './password.service';
@@ -26,7 +25,7 @@ export class AuthService {
   async sendRecoverPasswordEmail(email: string) {
     const resetToken = crypto.randomBytes(20).toString('hex');
     const token = crypto.createHash('sha256').update(resetToken).digest('hex');
-    let user = await this.userRepository.findByEmail(email);
+    const user = await this.userRepository.findByEmail(email);
     if (!user) throw new NotFoundError(responseMessages.notFound(responseMessages.user.entity), email);
     user.setRecoverPasswordData(token);
     await this.userRepository.update(user);
@@ -64,9 +63,10 @@ export class AuthService {
     const passwordMatch = await bcrypt.compare(input.password, user.password);
     if (!passwordMatch) throw new InvalidCredentialsError();
 
-    const tokens = await this.sessionService.createAuthenticatedSession({ ...user, id: user.id }, request);
-    const { accessTokenHeaderKey } = apiConfig;
-    response.header(accessTokenHeaderKey, tokens.accessToken);
+    const session = await this.sessionService.createAuthenticatedSession({ ...user, id: user.id }, request);
+
+    response.cookie('access_token', `Bearer ${session.accessToken}`, { expires: new Date(session.accessExpiresAt) });
+    response.cookie('refresh_token', `Bearer ${session.refreshToken}`, { expires: new Date(session.refreshExpiresAt) });
   }
 
   async refreshToken(refreshToken: string): Promise<string> {

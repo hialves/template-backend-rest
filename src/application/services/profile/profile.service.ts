@@ -1,4 +1,4 @@
-import { HttpStatus, Injectable } from '@nestjs/common';
+import { HttpStatus } from '@nestjs/common';
 import { Role } from '@prisma/client';
 import { responseMessages } from '../../messages/response.messages';
 import { ApplicationError } from '../../errors/application-error';
@@ -7,7 +7,6 @@ import { CustomerRepository } from '../../repositories/customer-repository.inter
 import { ID } from '../../../@types';
 import { UserRepository } from '../../repositories/user-repository.interface';
 
-@Injectable()
 export class ProfileService {
   constructor(
     private userRepository: UserRepository,

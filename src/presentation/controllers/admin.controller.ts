@@ -13,7 +13,7 @@ import { IsPublic } from '../decorators/public.decorator';
 import { CreateAdminData } from '../../domain/valueobjects/create-admin-data';
 
 @ApiTags('Admin')
-@Controller('admin')
+@Controller('admins')
 export class AdminController {
   constructor(
     private prisma: PrismaService,

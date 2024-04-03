@@ -1,7 +1,6 @@
 import { HttpStatus } from '@nestjs/common';
 import { ID } from '../../../@types';
 import { Admin } from '../../../domain/entities/admin';
-import { User } from '../../../domain/entities/user';
 import { UpdateAdminData } from '../../../domain/valueobjects/update-admin-data';
 import { ApplicationError } from '../../errors/application-error';
 import { PasswordService } from '../../interfaces/password-service.interface';

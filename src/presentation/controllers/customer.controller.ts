@@ -8,8 +8,6 @@ import { Role } from '@prisma/client';
 import { ApiTags } from '@nestjs/swagger';
 import { Roles } from '../decorators/roles.decorator';
 import { IsPublic } from '../decorators/public.decorator';
-import { Customer } from '../../domain/entities/customer';
-import { User } from '../../domain/entities/user';
 import { UpdateCustomerData } from '../../domain/valueobjects/update-customer-data';
 import { PrismaService } from '../../infra/persistence/prisma/prisma.service';
 import { CreateCustomerData } from '../../domain/valueobjects/create-customer-data';

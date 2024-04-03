@@ -28,22 +28,24 @@ export class SessionService {
   async createAuthenticatedSession(
     user: UserSession,
     request: Request,
-  ): Promise<{ accessToken: string; refreshToken: string }> {
+  ): Promise<{ accessToken: string; refreshToken: string; accessExpiresAt: string; refreshExpiresAt: string }> {
     const { id: sub, email, role } = user;
 
     const accessToken = await this.generateAccessToken({ sub, email, role });
     const refreshToken = await this.generateRefreshToken(user);
+    const accessExpiresAt = this.getExpiryDate(this.configService.get('JWT_ACCESS_TOKEN_DURATION')!);
+    const refreshExpiresAt = this.getExpiryDate(this.configService.get('JWT_REFRESH_TOKEN_DURATION')!);
     await this.repository.create({
       data: {
         token: refreshToken,
         userId: sub,
-        expiresAt: this.getExpiryDate(),
+        expiresAt: refreshExpiresAt,
         device: request.headers['user-agent'],
         ip: request.ip,
       },
     });
 
-    return { accessToken, refreshToken };
+    return { accessToken, refreshToken, accessExpiresAt, refreshExpiresAt };
   }
 
   async findByRefreshToken(token: string): Promise<Session | null> {
@@ -58,7 +60,6 @@ export class SessionService {
     try {
       await this.repository.delete({ where: { id } });
       // TODO: block list subsequent calls
-      return;
     } catch (error) {
       throw new InternalServerErrorException({ message: error.message });
     }
@@ -68,8 +69,8 @@ export class SessionService {
     return this.jwtService.verifyAsync(token, this.refreshTokenOptions);
   }
 
-  private getExpiryDate(): string {
-    const timeInMs = ms(this.configService.get('JWT_REFRESH_TOKEN_DURATION'));
+  private getExpiryDate(duration: string): string {
+    const timeInMs = ms(duration);
     return dayjs().add(timeInMs, 'milliseconds').toISOString();
   }
 
@@ -92,7 +93,7 @@ export class SessionService {
   }
 
   static getBearerToken(request: Request): string | undefined {
-    const bearerToken = request.header('Authorization');
+    const bearerToken = request.cookies.access_token;
 
     if (bearerToken) {
       const match = bearerToken.trim().match(/^bearer\s(.+)$/i);

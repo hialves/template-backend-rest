@@ -21,7 +21,7 @@ export class LoggingInterceptor implements NestInterceptor {
 
     if (request.headers.authorization) {
       const token = request.headers?.authorization?.split('Bearer ').join('');
-      partialToken = token.slice(0, token.length / 2).padEnd(token.length, '*');
+      partialToken = token.slice(0, token.length * 0.1).padEnd(token.length / 3, '*');
     }
 
     this.logger.log(
