@@ -5,7 +5,7 @@ import { PrismaService } from '../../infra/persistence/prisma/prisma.service';
 import { Role } from '@prisma/client';
 import { Roles } from '../decorators/roles.decorator';
 import { PaginatedDto } from '../dto/list/filter-input.dto';
-import { ID } from '../../@types';
+import { ID } from '../../domain/entities';
 import { UpdateAdminDto } from '../dto/admin/update-admin.dto';
 import { UpdateAdminData } from '../../domain/valueobjects/update-admin-data';
 import { AdminService } from '../../application/services/admin/admin.service';

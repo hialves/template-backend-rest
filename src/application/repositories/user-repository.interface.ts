@@ -1,4 +1,4 @@
-import { ID } from '../../@types';
+import { ID } from '../../domain/entities';
 import { User } from '../../domain/entities/user';
 
 export abstract class UserRepository {

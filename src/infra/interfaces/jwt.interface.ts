@@ -1,5 +1,5 @@
 import { Role } from '@prisma/client';
-import { ID } from '../../@types';
+import { ID } from '../../domain/entities';
 
 export interface JwtPayload {
   sub: ID;

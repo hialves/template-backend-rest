@@ -8,7 +8,7 @@ import { Session } from '@prisma/client';
 
 import { PrismaService } from '../persistence/prisma/prisma.service';
 import { JwtPayload } from '../interfaces/jwt.interface';
-import { ID } from '../../@types';
+import { ID } from '../../domain/entities';
 import { User } from '../../domain/entities/user';
 
 type UserSession = Required<Pick<User, 'id' | 'email' | 'role'>>;

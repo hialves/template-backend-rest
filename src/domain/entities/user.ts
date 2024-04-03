@@ -1,6 +1,6 @@
 import { Role } from '@prisma/client';
 import dayjs from 'dayjs';
-import { ID } from '../../@types';
+import { ID } from '.';
 
 interface UserFields {
   id: ID;

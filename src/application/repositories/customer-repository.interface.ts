@@ -1,4 +1,4 @@
-import { ID } from '../../@types';
+import { ID } from '../../domain/entities';
 import { Customer } from '../../domain/entities/customer';
 import { CreateCustomerData } from '../../domain/valueobjects/create-customer-data';
 

@@ -1,4 +1,4 @@
-import { ID } from '../../@types';
+import { ID } from '../../domain/entities';
 
 export const cacheKeys = {
   sms: {

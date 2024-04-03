@@ -1,4 +1,4 @@
-import { ID } from '../../@types';
+import { ID } from '../entities';
 
 export class UpdateCustomerData {
   constructor(

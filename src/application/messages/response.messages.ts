@@ -1,4 +1,4 @@
-import { DocumentType } from '../../@types';
+import { DocumentType } from '../../domain/entities';
 
 export const responseMessages = {
   notFound: (entity: string = 'Recurso', final = 'o') => `${entity} não encontrad${final}`,

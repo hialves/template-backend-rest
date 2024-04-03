@@ -1,5 +1,5 @@
 import { HttpStatus } from '@nestjs/common';
-import { ID } from '../../../@types';
+import { ID } from '../../../domain/entities';
 import { CustomerRepository } from '../../repositories/customer-repository.interface';
 import { ApplicationError } from '../../errors/application-error';
 import { responseMessages } from '../../messages/response.messages';

@@ -1,4 +1,4 @@
-import { ID } from '../../@types';
+import { ID } from '../../domain/entities';
 import { Admin } from '../../domain/entities/admin';
 import { CreateAdminData } from '../../domain/valueobjects/create-admin-data';
 

@@ -5,7 +5,7 @@ import { Readable } from 'stream';
 import { PaginatedDto } from '../../../presentation/dto/list/filter-input.dto';
 import { PaginatedList } from '../../../presentation/dto/list/paginated-list';
 import { responseMessages } from '../../../application/messages/response.messages';
-import { ID } from '../../../@types';
+import { ID } from '../../../domain/entities';
 import { PrismaService } from '../prisma/prisma.service';
 import { Asset } from '@prisma/client';
 

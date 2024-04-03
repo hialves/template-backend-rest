@@ -1,5 +1,5 @@
 import { HttpStatus } from '@nestjs/common';
-import { ID } from '../../../@types';
+import { ID } from '../../../domain/entities';
 import { Admin } from '../../../domain/entities/admin';
 import { UpdateAdminData } from '../../../domain/valueobjects/update-admin-data';
 import { ApplicationError } from '../../errors/application-error';

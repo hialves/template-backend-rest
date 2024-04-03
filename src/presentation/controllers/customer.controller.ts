@@ -1,6 +1,6 @@
 import { CreateCustomerDto } from '../dto/customer/create-customer.dto';
 import { CustomerService } from '../../application/services/customer/customer.service';
-import { ID } from '../../@types';
+import { ID } from '../../domain/entities';
 import { UpdateCustomerDto } from '../dto/customer/update-customer.dto';
 import { Body, Controller, Delete, Get, Param, Patch, Post, Query } from '@nestjs/common';
 import { PaginatedDto } from '../dto/list/filter-input.dto';

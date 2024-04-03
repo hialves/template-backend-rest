@@ -1,4 +1,4 @@
-import { ID } from '../../@types';
+import { ID } from '.';
 
 export interface AdminFields {
   id: ID;
