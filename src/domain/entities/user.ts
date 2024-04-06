@@ -1,8 +1,8 @@
 import { Role } from '@prisma/client';
 import dayjs from 'dayjs';
-import { ID } from '.';
+import { ExternalID, ID } from '.';
 
-interface UserFields {
+export interface UserFields {
   id: ID;
   createdAt: Date;
   updatedAt: Date;
@@ -13,6 +13,7 @@ interface UserFields {
   googleToken: string | null;
   role: Role | null;
   lastLogin: Date | null;
+  externalId: ExternalID;
 }
 
 export class User implements UserFields {
@@ -26,6 +27,7 @@ export class User implements UserFields {
   googleToken: string | null;
   role: Role | null;
   lastLogin: Date | null;
+  externalId: ExternalID;
 
   constructor(input: UserFields) {
     this.id = input.id;
@@ -38,6 +40,7 @@ export class User implements UserFields {
     this.googleToken = input.googleToken;
     this.role = input.role;
     this.lastLogin = input.lastLogin;
+    this.externalId = input.externalId;
   }
 
   setLastLogin() {

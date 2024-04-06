@@ -1,4 +1,4 @@
-import { ID } from '.';
+import { ExternalID, ID } from '.';
 
 export interface AdminFields {
   id: ID;
@@ -8,6 +8,7 @@ export interface AdminFields {
   email: string;
   assetId: ID | null;
   userId: ID | null;
+  externalId: ExternalID;
 }
 
 export class Admin implements AdminFields {
@@ -18,6 +19,7 @@ export class Admin implements AdminFields {
   email: string;
   assetId: ID | null;
   userId: ID | null;
+  externalId: ExternalID;
 
   constructor(input: AdminFields) {
     this.id = input.id;
@@ -27,5 +29,6 @@ export class Admin implements AdminFields {
     this.email = input.email;
     this.assetId = input.assetId;
     this.userId = input.userId;
+    this.externalId = input.externalId;
   }
 }

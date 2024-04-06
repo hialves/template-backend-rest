@@ -3,7 +3,7 @@ import * as bcrypt from 'bcrypt';
 import * as crypto from 'crypto';
 import dayjs from 'dayjs';
 
-import { InvalidCredentialsError, NotFoundError } from '../../presentation/responses/result-type';
+import { InvalidCredentialsError, NotFoundError } from '../../presentation/response/result-type';
 import { responseMessages } from '../../application/messages/response.messages';
 import { LoginDto } from '../../presentation/dto/auth/login.dto';
 import { SessionService } from './session.service';
@@ -63,6 +63,8 @@ export class AuthService {
     const passwordMatch = await bcrypt.compare(input.password, user.password);
     if (!passwordMatch) throw new InvalidCredentialsError();
 
+    user.setLastLogin();
+    await this.userRepository.update(user);
     const session = await this.sessionService.createAuthenticatedSession({ ...user, id: user.id }, request);
 
     response.cookie('access_token', `Bearer ${session.accessToken}`, { expires: new Date(session.accessExpiresAt) });

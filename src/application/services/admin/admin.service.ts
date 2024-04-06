@@ -1,5 +1,5 @@
 import { HttpStatus } from '@nestjs/common';
-import { ID } from '../../../domain/entities';
+import { ExternalID, ID } from '../../../domain/entities';
 import { Admin } from '../../../domain/entities/admin';
 import { UpdateAdminData } from '../../../domain/valueobjects/update-admin-data';
 import { ApplicationError } from '../../errors/application-error';
@@ -19,8 +19,8 @@ export class AdminService {
     return this.repository.create(input);
   }
 
-  async update(id: ID, updateData: UpdateAdminData): Promise<Admin | ApplicationError> {
-    const existsAdmin = await this.repository.findById(id);
+  async update(externalId: ExternalID, updateData: UpdateAdminData): Promise<Admin | ApplicationError> {
+    const existsAdmin = await this.repository.findByExternalId(externalId);
     if (!existsAdmin)
       return new ApplicationError(
         responseMessages.notFound(responseMessages.admin.entity),

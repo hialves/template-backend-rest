@@ -1,8 +1,8 @@
 import { CreateCustomerDto } from '../dto/customer/create-customer.dto';
 import { CustomerService } from '../../application/services/customer/customer.service';
-import { ID } from '../../domain/entities';
+import { ExternalID } from '../../domain/entities';
 import { UpdateCustomerDto } from '../dto/customer/update-customer.dto';
-import { Body, Controller, Delete, Get, Param, Patch, Post, Query } from '@nestjs/common';
+import { Body, Controller, Delete, Get, NotFoundException, Param, Patch, Post, Query } from '@nestjs/common';
 import { PaginatedDto } from '../dto/list/filter-input.dto';
 import { Role } from '@prisma/client';
 import { ApiTags } from '@nestjs/swagger';
@@ -11,6 +11,7 @@ import { IsPublic } from '../decorators/public.decorator';
 import { UpdateCustomerData } from '../../domain/valueobjects/update-customer-data';
 import { PrismaService } from '../../infra/persistence/prisma/prisma.service';
 import { CreateCustomerData } from '../../domain/valueobjects/create-customer-data';
+import { CustomerMapper } from '../mappers/customer.mapper';
 
 @ApiTags('Customer')
 @Controller('customers')
@@ -21,39 +22,43 @@ export class CustomerController {
   ) {}
 
   private get repository() {
-    return this.prisma.admin;
+    return this.prisma.customer;
   }
 
   @IsPublic()
   @Post()
-  createCustomer(@Body() dto: CreateCustomerDto) {
+  async create(@Body() dto: CreateCustomerDto) {
     const { email, name, phone, password } = dto;
     const input = new CreateCustomerData({ name, email, password, phone, role: Role.customer });
-    return this.service.create(input);
+    const result = await this.service.create(input);
+    return this.findOne(result.externalId);
   }
 
   @Roles(Role.super_admin)
   @Get()
-  findAll(@Query() filters: PaginatedDto) {
-    return this.repository.findMany(filters);
+  async findAll(@Query() filters: PaginatedDto) {
+    const result = await this.repository.findMany({ ...filters, include: { user: true } });
+    return result.map(CustomerMapper.getToResponse);
   }
 
   @Roles(Role.super_admin, Role.manager, Role.customer)
   @Get(':id')
-  findOne(@Param('id') id: ID) {
-    return this.repository.findUnique({ where: { id } });
+  async findOne(@Param('id') externalId: ExternalID) {
+    const result = await this.repository.findUnique({ where: { externalId }, include: { user: true } });
+    if (!result) throw new NotFoundException();
+    return CustomerMapper.getToResponse(result);
   }
 
   @Roles(Role.super_admin, Role.customer)
   @Patch(':id')
-  update(@Param('id') id: ID, @Body() dto: UpdateCustomerDto) {
+  update(@Param('id') externalId: ExternalID, @Body() dto: UpdateCustomerDto) {
     const data = new UpdateCustomerData(dto);
-    return this.service.update(id, data);
+    return this.service.update(externalId, data);
   }
 
   @Roles(Role.super_admin)
   @Delete(':id')
-  async remove(@Param('id') id: ID) {
-    await this.repository.delete({ where: { id } });
+  async remove(@Param('id') externalId: ExternalID) {
+    await this.repository.delete({ where: { externalId } });
   }
 }

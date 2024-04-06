@@ -1,7 +1,7 @@
-import { ID } from '.';
+import { ExternalID, ID } from '.';
 
 export interface CustomerFields {
-  id: string;
+  id: ID;
   createdAt: Date;
   updatedAt: Date;
   name: string;
@@ -9,10 +9,11 @@ export interface CustomerFields {
   phone: string | null;
   assetId: ID | null;
   userId: ID | null;
+  externalId: ExternalID;
 }
 
 export class Customer implements CustomerFields {
-  id: string;
+  id: ID;
   createdAt: Date;
   updatedAt: Date;
   name: string;
@@ -20,6 +21,7 @@ export class Customer implements CustomerFields {
   phone: string | null;
   assetId: ID | null;
   userId: ID | null;
+  externalId: ExternalID;
 
   constructor(input: CustomerFields) {
     this.id = input.id;
@@ -30,5 +32,6 @@ export class Customer implements CustomerFields {
     this.phone = input.phone;
     this.assetId = input.assetId;
     this.userId = input.userId;
+    this.externalId = input.externalId;
   }
 }

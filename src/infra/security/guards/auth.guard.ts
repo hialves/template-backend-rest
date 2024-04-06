@@ -28,7 +28,7 @@ export class AuthGuard implements CanActivate {
     let session: JwtPayload | undefined;
 
     if (token) {
-      session = jwt.verify(token, this.configService.get('JWT_ACCESS_TOKEN_SECRET_KEY')!) as JwtPayload;
+      session = jwt.verify(token, this.configService.get('JWT_ACCESS_TOKEN_SECRET_KEY')!) as unknown as JwtPayload;
 
       if (session) {
         const { sub: userId, ...restSession } = session;

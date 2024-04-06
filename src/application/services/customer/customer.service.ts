@@ -1,5 +1,5 @@
 import { HttpStatus } from '@nestjs/common';
-import { ID } from '../../../domain/entities';
+import { ExternalID } from '../../../domain/entities';
 import { CustomerRepository } from '../../repositories/customer-repository.interface';
 import { ApplicationError } from '../../errors/application-error';
 import { responseMessages } from '../../messages/response.messages';
@@ -19,8 +19,8 @@ export class CustomerService {
     return this.repository.create(input);
   }
 
-  async update(id: ID, updateData: UpdateCustomerData): Promise<Customer | ApplicationError> {
-    const existsCustomer = await this.repository.findById(id);
+  async update(externalId: ExternalID, updateData: UpdateCustomerData): Promise<Customer | ApplicationError> {
+    const existsCustomer = await this.repository.findByExternalId(externalId);
     if (!existsCustomer)
       return new ApplicationError(
         responseMessages.notFound(responseMessages.customer.entity),

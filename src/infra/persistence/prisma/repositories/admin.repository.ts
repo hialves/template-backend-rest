@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma.service';
-import { ID } from '../../../../domain/entities';
+import { ExternalID, ID } from '../../../../domain/entities';
 import { Admin } from '../../../../domain/entities/admin';
 import { Admin as PrismaAdmin } from '@prisma/client';
 import { AdminRepository } from '../../../../application/repositories/admin-repository.interface';
@@ -40,6 +40,13 @@ export class AdminPrismaRepository implements AdminRepository {
     return toDomain(result);
   }
 
+  async findByExternalId(externalId: ExternalID): Promise<Admin | null> {
+    const result = await this.repository.findUnique({
+      where: { externalId },
+    });
+    return toDomain(result);
+  }
+
   async findByEmail(email: string) {
     const result = await this.repository.findFirst({
       where: { email },
@@ -47,16 +54,9 @@ export class AdminPrismaRepository implements AdminRepository {
     return toDomain(result);
   }
 
-  async exists(id: ID): Promise<boolean> {
-    const result = await this.repository.findUnique({
-      where: { id },
-      select: { id: true },
-    });
-    return !!result;
-  }
-
   async update(input: Admin): Promise<Admin> {
-    return new Admin(await this.repository.update({ where: { id: input.id }, data: input }));
+    const admin = await this.repository.update({ where: { id: input.id }, data: input });
+    return new Admin(admin);
   }
 
   async getByUserId(userId: ID): Promise<Admin | null> {

@@ -1,5 +1,5 @@
 import { validate } from 'class-validator';
-import { ValidationError } from '../responses/result-type';
+import { ValidationError } from '../response/result-type';
 
 export class CommonValidator {
   static async simpleValidate(input: object) {

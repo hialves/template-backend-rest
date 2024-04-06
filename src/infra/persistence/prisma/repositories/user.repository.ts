@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma.service';
-import { ID } from '../../../../domain/entities';
+import { ExternalID, ID } from '../../../../domain/entities';
 import { UserRepository } from '../../../../application/repositories/user-repository.interface';
 import { User } from '../../../../domain/entities/user';
 import { User as PrismaUser } from '@prisma/client';
@@ -25,6 +25,13 @@ export class UserPrismaRepository implements UserRepository {
     return toDomain(result);
   }
 
+  async findByExternalId(externalId: ExternalID): Promise<User | null> {
+    const result = await this.repository.findUnique({
+      where: { externalId },
+    });
+    return toDomain(result);
+  }
+
   async findByEmail(email: string) {
     const result = await this.repository.findUnique({
       where: { email },
@@ -37,14 +44,6 @@ export class UserPrismaRepository implements UserRepository {
       where: { recoverPasswordToken },
     });
     return toDomain(result);
-  }
-
-  async exists(id: ID): Promise<boolean> {
-    const result = await this.repository.findUnique({
-      where: { id },
-      select: { id: true },
-    });
-    return !!result;
   }
 
   async update(input: User): Promise<User> {

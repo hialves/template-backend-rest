@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma.service';
-import { ID } from '../../../../domain/entities';
+import { ExternalID, ID } from '../../../../domain/entities';
 import { Customer as PrismaCustomer } from '@prisma/client';
 import { Customer } from '../../../../domain/entities/customer';
 import { CustomerRepository } from '../../../../application/repositories/customer-repository.interface';
@@ -40,19 +40,18 @@ export class CustomerPrismaRepository implements CustomerRepository {
     return toDomain(result);
   }
 
+  async findByExternalId(externalId: ExternalID): Promise<Customer | null> {
+    const result = await this.repository.findUnique({
+      where: { externalId },
+    });
+    return toDomain(result);
+  }
+
   async findByEmail(email: string) {
     const result = await this.repository.findFirst({
       where: { email },
     });
     return toDomain(result);
-  }
-
-  async exists(id: ID): Promise<boolean> {
-    const result = await this.repository.findUnique({
-      where: { id },
-      select: { id: true },
-    });
-    return !!result;
   }
 
   async update(input: Customer): Promise<Customer> {
