@@ -5,15 +5,15 @@ import * as bcrypt from 'bcrypt';
 const prisma = new PrismaClient();
 
 function start(context: string) {
-  console.log(`\n  ${context}`);
+  console.info(`\n  ${context}`);
 }
 
-function log(content: string) {
-  console.log(`\t${content}`);
+function info(content: string) {
+  console.info(`\t${content}`);
 }
 
 function done(context: string) {
-  console.log(`  ${context} DONE!`);
+  console.info(`  ${context} DONE!`);
 }
 
 async function createSuperadmin() {
@@ -26,7 +26,7 @@ async function createSuperadmin() {
   const user = await prisma.user.findUnique({
     where: { email: superadminEmail },
   });
-  log(`Superadmin already exists with email ${superadminEmail}, exiting...`);
+  info(`Superadmin already exists with email ${superadminEmail}, exiting...`);
   if (user) return done(context);
 
   const superadminPassword = await bcrypt.hash(process.env.SUPERADMIN_PASSWORD, 12);
