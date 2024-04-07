@@ -14,9 +14,12 @@ import { LoggingInterceptor } from './presentation/interceptors/logging.intercep
 import { ProfileModule } from './infra/modules/profile.module';
 import { RepositoryModule } from './infra/modules/repository.module';
 import { AdminModule } from './infra/modules/admin.module';
+import { RateLimitModule } from './infra/security/rate-limit.module';
+import { ThrottlerGuard } from '@nestjs/throttler';
 
 @Module({
   imports: [
+    RateLimitModule,
     ConfigModule.forRoot({
       isGlobal: true,
     }),
@@ -32,6 +35,7 @@ import { AdminModule } from './infra/modules/admin.module';
   ],
   controllers: [AppController],
   providers: [
+    { provide: APP_GUARD, useClass: ThrottlerGuard },
     { provide: APP_GUARD, useClass: AuthGuard },
     { provide: APP_GUARD, useClass: RolesGuard },
     { provide: APP_INTERCEPTOR, useClass: LoggingInterceptor },
