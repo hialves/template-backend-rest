@@ -27,6 +27,10 @@ export class CacheServiceImpl implements CacheService {
     return this.cacheManager.wrap(key, fn, milliseconds);
   }
 
+  on(event: 'error', handler: (error: Error) => void) {
+    this.cacheManager.on(event, handler);
+  }
+
   public store = this.cacheManager.store;
 
   async getAndSave<T>(key: string, fn: () => Promise<T>, milliseconds?: Milliseconds): Promise<T> {
